@@ -40,16 +40,17 @@ void dijkstra(int s) {
 }
 
 int main() {
-  cin >> V >> E;
+  // V = ;
+  // E = ;
   G = vector<vector<edge>>(V);
-  dist = vector<ll>(V);
 
   for (int i = 0; i < E; i++) {
     ll from, to, cost;
-    cin >> from >> to >> cost;
+    //
     G[from].push_back(edge(to, cost));
   }
 
+  dist = vector<ll>(V);
   dijkstra(0);
   for (int i = 0; i < V; i++) {
     cout << dist[i] << endl;
