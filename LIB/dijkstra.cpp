@@ -16,7 +16,7 @@ typedef pair<ll, int> P;  // <最短距離, 頂点の番号>
 
 /* 負閉路の検出はできない。O(E logV) */
 /* 負の辺があってもダメ */
-void dijkstra(int s) {
+void dijkstra(int V, int E, vector<vector<edge>>& G, vector<ll>& dist, int s) {
   priority_queue<P, vector<P>, greater<P>> que;
   fill(dist.begin(), dist.end(), LINF);
   dist[s] = 0;
@@ -40,19 +40,24 @@ void dijkstra(int s) {
 }
 
 int main() {
-  // V = ;
-  // E = ;
-  G = vector<vector<edge>>(V);
+  int V, E;
 
+  // V=;
+  // E=;
+
+  vector<vector<edge>> G(V);
   for (int i = 0; i < E; i++) {
     ll from, to, cost;
-    //
+    // from = ;
+    // to = ;
+    // cost = ;
     G[from].push_back(edge(to, cost));
   }
+  vector<ll> dist(V);
+  dijkstra(V, E, G, dist, 0);
 
-  dist = vector<ll>(V);
-  dijkstra(0);
   for (int i = 0; i < V; i++) {
-    cout << dist[i] << endl;
+    if (dist[i] != LINF)
+      cout << dist[i] << endl;
   }
 }
