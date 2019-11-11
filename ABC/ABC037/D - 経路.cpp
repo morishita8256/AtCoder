@@ -14,7 +14,7 @@ const ll LINF = 1001001001001001001ll;
 const int MOD = 1000000007;
 
 template <class T>
-inline bool chmin(T &a, T b) {
+inline bool chmin(T& a, T b) {
   if (a > b) {
     a = b;
     return true;
@@ -23,7 +23,7 @@ inline bool chmin(T &a, T b) {
 }
 
 template <class T>
-inline bool chmax(T &a, T b) {
+inline bool chmax(T& a, T b) {
   if (a < b) {
     a = b;
     return true;
@@ -36,8 +36,8 @@ int main() {
   cin >> H >> W;
   vector<vector<int>> a(H, vector<int>(W));
   rep(y, H) {
-    rep(x, W) { cin >> a[y][x]; }
+    rep(x, W) {
+      cin >> a[y][x];
+    }
   }
-  
-
 }

@@ -3,11 +3,13 @@ using namespace std;
 #define pb push_back
 #define fi first
 #define se second
+#define mp make_pair
 #define all(x) (x).begin(), (x).end()
 #define rep(i, n) for (int i = 0; i < (n); ++i)
 #define repp(i, a, b) for (int i = a; i <= (b); ++i)
 #define repr(i, a, b) for (int i = a; i >= (b); --i)
 #define bit(n) (1LL << (n))
+#define sz(x) ((ll)(x).size())
 typedef long long ll;
 const int INF = 1001001001;
 const ll LINF = 1001001001001001001ll;
@@ -31,34 +33,30 @@ inline bool chmax(T& a, T b) {
   return false;
 }
 
-void warshal_floyd(vector<vector<ll>>& dist) {
-  int V = dist.size();
-  rep(k, V) {
-    rep(i, V) {
-      rep(j, V) {
-        // 負の辺のために必要なif文
-        if (dist[i][k] != LINF && dist[k][j] != LINF)
-          chmin(dist[i][j], dist[i][k] + dist[k][j]);
-      }
-    }
-  }
-}
-
-
 int main() {
-  int V, E;
-  // V =, E = ;
+  int A, B, C;
+  cin >> A >> B >> C;
 
-  vector<vector<ll>> dist(V, vector<ll>(V, LINF));
-  rep(i, V) {
-    dist[i][i] = 0;
-  }
-  rep(i, E) {
-    ll from, to, cost;
-    // from =, to =, cost = ;
-    dist[from][to] = cost;
-    // dist[to][from] = cost;
-  }
+  if (A > B && A > C)
+    cout << 1 << endl;
+  else if (A < B && A < C)
+    cout << 3 << endl;
+  else
+    cout << 2 << endl;
 
-  warshal_floyd(dist);
+  swap(A, B);
+  if (A > B && A > C)
+    cout << 1 << endl;
+  else if (A < B && A < C)
+    cout << 3 << endl;
+  else
+    cout << 2 << endl;
+
+  swap(A, C);
+  if (A > B && A > C)
+    cout << 1 << endl;
+  else if (A < B && A < C)
+    cout << 3 << endl;
+  else
+    cout << 2 << endl;
 }
