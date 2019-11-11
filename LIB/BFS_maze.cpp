@@ -66,7 +66,7 @@ int main() {
       int ny = y + dy[i], nx = x + dx[i];
 
       // inside maze
-      if (y < 0 || y >= H || x < 0 || x >= W)
+      if (ny < 0 || ny >= H || nx < 0 || nx >= W)
         continue;
 
       // not wall

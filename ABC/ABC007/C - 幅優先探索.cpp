@@ -73,7 +73,7 @@ int main() {
     rep(i, 4) {
       int y = now.fi, x = now.se;
       int ny = y + dy[i], nx = x + dx[i];
-      if (y < 0 || y >= H || x < 0 || x >= W)
+      if (ny < 0 || ny >= H || nx < 0 || nx >= W)
         continue;
       if (c[ny][nx] == '#')
         continue;
