@@ -3,7 +3,7 @@ using namespace std;
 const int MOD = 1000000007;
 typedef long long ll;
 
-const int MAX = 510000;
+const int MAX = 5100000;
 long long fac[MAX], finv[MAX], inv[MAX];
 
 /* 前処理 O(n) */
