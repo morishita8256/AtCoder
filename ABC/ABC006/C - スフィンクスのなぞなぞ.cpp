@@ -34,35 +34,18 @@ inline bool chmax(T& a, T b) {
 }
 
 int main() {
-  int N, K;
-  cin >> N >> K;
-  string S;
-  cin >> S;
-
-  string U = S;
-  sort(all(U));
-
-  repr(i, N, 0) {
-    int diff = 0;
-    rep(j, i) {
-      if (U[j] != S[j])
-        diff++;
-    }
-    map<char, int> mS;
-    map<char, int> mU;
-    repp(j, i, N - 1) {
-      mS[S[j]]++;
-      mU[U[j]]++;
-    }
-
-    int cnt = 0;
-    for (char c = 'a'; c <= 'z'; c++) {
-      cnt += abs(mS[c] - mU[c]);
-    }
-    cnt /= 2;
-
-    if (diff + cnt <= K) {
-    
-        }
+  int N, M;
+  cin >> N >> M;
+  rep(b, N + 1) {
+    int c = M - 2 * N - b;
+    if (c % 2 || c < 0)
+      continue;
+    c /= 2;
+    int a = N - b - c;
+    if (a < 0)
+      continue;
+    printf("%d %d %d\n", a, b, c);
+    return 0;
   }
+  printf("%d %d %d\n", -1, -1, -1);
 }
