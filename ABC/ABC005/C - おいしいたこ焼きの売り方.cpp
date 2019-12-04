@@ -34,12 +34,23 @@ inline bool chmax(T& a, T b) {
 }
 
 int main() {
-  int M1, D1;
-  cin >> M1 >> D1;
-  int M2, D2;
-  cin >> M2 >> D2;
+  int T;
+  cin >> T;
+  int N;
+  cin >> N;
+  vector<int> A(N);
+  rep(i, N) {
+    cin >> A[i];
+  }
+  int M;
+  cin >> M;
+  vector<int> B(M);
+  rep(i, M) {
+    cin >> B[i];
+  }
 
-  cout << (M1 != M2) << endl;
-
-  
+  rep(i, N - 1) {
+    int temp = A[i + 1] - A[i];
+    
+  }
 }
