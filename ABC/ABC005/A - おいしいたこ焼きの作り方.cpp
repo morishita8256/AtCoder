@@ -34,10 +34,7 @@ inline bool chmax(T& a, T b) {
 }
 
 int main() {
-  int M1, D1;
-  cin >> M1 >> D1;
-  int M2, D2;
-  cin >> M2 >> D2;
-
-  cout << (M1 != M2) << endl;
+  int x, y;
+  cin >> x >> y;
+  cout << y / x << endl;
 }

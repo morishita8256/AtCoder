@@ -49,8 +49,25 @@ int main() {
     cin >> B[i];
   }
 
-  rep(i, N - 1) {
-    int temp = A[i + 1] - A[i];
-    
+  int ind = 0;
+  rep(i, M) {
+    if (ind >= N) {
+      cout << "no" << endl;
+      return 0;
+    }
+    if (B[i] < A[ind]) {
+      cout << "no" << endl;
+      return 0;
+    }
+
+    while (B[i] > A[ind] + T) {
+      ind++;
+      if (ind == N) {
+        cout << "no" << endl;
+        return 0;
+      }
+    }
+    ind++;
   }
+  cout << "yes" << endl;
 }
