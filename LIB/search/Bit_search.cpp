@@ -49,8 +49,8 @@ int main() {
   N = 3;
 
   /* 2bit */
-  vector<int> A(N);
   rep(b, bit(N)) {
+    vector<int> A(N);
     rep(i, N) {
       if ((b >> i) & 1)
         A[i] = 1;
