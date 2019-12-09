@@ -87,68 +87,32 @@ struct mint {
   }
 };
 
-const int MAX = 51000;
-long long fac[MAX], finv[MAX], inv[MAX];
-/* 前処理 O(n) */
-void COMinit() {
-  fac[0] = fac[1] = 1;
-  finv[0] = finv[1] = 1;
-  inv[1] = 1;
-  for (int i = 2; i < MAX; i++) {
-    fac[i] = fac[i - 1] * i % MOD;
-    inv[i] = MOD - inv[MOD % i] * (MOD / i) % MOD;
-    finv[i] = finv[i - 1] * inv[i] % MOD;
-  }
-}
-
-/* 計算 O(1) */
-long long COM(int n, int k) {
-  if (n < k)
-    return 0;
-  if (n < 0 || k < 0)
-    return 0;
-  return fac[n] * (finv[k] * finv[n - k] % MOD) % MOD;
-}
-
-ll D, L;
-
-ll com(ll place) {
-  mint res = 1;
-  res *= COM(place, D);
-  res *= COM(place - D, L);
-  return res.x;
-}
-
 int main() {
-  ll R, C;
-  cin >> R >> C;
-  ll X, Y;
-  cin >> X >> Y;
-  cin >> D >> L;
+  ll N;
+  cin >> N;
+  vector<ll> A(N);
+  rep(i, N) {
+    cin >> A[i];
+  }
 
-
-  COMinit();
   mint ans = 0;
-  rep(b, bit(4)) {
-    ll x = X, y = Y;
-    rep(i, 4) {
-      if ((b >> i) & 1) {
-        if (i % 2)
-          x--;
-        else
-          y--;
-      }
+  mint pow2 = 1;
+  rep(b, 62) {
+    ll cnt_0 = 0, cnt_1 = 0;
+    rep(i, N) {
+      if (A[i] % 2)
+        cnt_1++;
+      else
+        cnt_0++;
     }
 
-    if (x < 0 || y < 0)
-      continue;
-    ll temp = com(x * y);
-    if (__builtin_popcount(b) % 2)
-      temp *= -1;
+    mint temp = cnt_0 * cnt_1;
+    ans += pow2 * temp;
 
-    ans += temp;
+    rep(i, N) {
+      A[i] /= 2;
+    }
+    pow2 *= 2;
   }
-
-  ans *= (R - X + 1) * (C - Y + 1);
   cout << ans.x << endl;
 }
