@@ -5,6 +5,10 @@ using namespace std;
 typedef long long ll;
 
 
+/*
+テキストTの中のパターンSの開始位置を求める。
+前処理O(S)。検索O(T)。
+*/
 struct KMP {
   string pattern;
   int plen;
