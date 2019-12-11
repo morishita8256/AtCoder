@@ -50,15 +50,14 @@ int main() {
 
   /* 2bit */
   rep(b, bit(N)) {
+    int num = __builtin_popcount(b);
     vector<int> A(N);
     rep(i, N) {
       if ((b >> i) & 1)
         A[i] = 1;
       else
         A[i] = 0;
-      cout << A[i];
     }
-    cout << endl;
   }
 
 
