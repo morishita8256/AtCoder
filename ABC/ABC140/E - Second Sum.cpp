@@ -32,18 +32,41 @@ inline bool chmax(T& a, T b) {
 }
 
 int main() {
-  int N;
+  ll N;
   cin >> N;
-  vector<int> P(N + 1);
-  vector<int> loc(N + 1);
-  P[0] = INF;
-  repp(i, 1, N) {
+  vector<ll> P(N);
+  vector<ll> ind(N);
+  rep(i, N) {
     cin >> P[i];
-    loc[P[i]] = i;
+    P[i]--;
+    ind[P[i]] = i;
   }
 
+  multiset<ll> s;
+  s.insert(-1);
+  s.insert(-1);
+  s.insert(N);
+  s.insert(N);
+
   ll ans = 0;
-  set<int> locs;
-  int num = 0;
-  repr(i, N, 1) {}
+  repr(i, N - 1, 0) {
+    s.insert(ind[i]);
+    auto it = s.lower_bound(ind[i]);
+    it--;
+    it--;
+    ll l2, l1, c, r1, r2;
+    l2 = *it;
+    it++;
+    l1 = *it;
+    it++;
+    c = *it;
+    it++;
+    r1 = *it;
+    it++;
+    r2 = *it;
+
+    ll temp = (c - l1) * (r2 - r1) + (r1 - c) * (l1 - l2);
+    ans += (ll)(i + 1) * temp;
+  }
+  cout << ans << endl;
 }

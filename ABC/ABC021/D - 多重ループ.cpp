@@ -32,36 +32,35 @@ inline bool chmax(T& a, T b) {
   }
   return false;
 }
+const int MAX = 5100000;
+long long fac[MAX], finv[MAX], inv[MAX];
+
+/* 前処理 O(n) */
+void COMinit() {
+  fac[0] = fac[1] = 1;
+  finv[0] = finv[1] = 1;
+  inv[1] = 1;
+  for (int i = 2; i < MAX; i++) {
+    fac[i] = fac[i - 1] * i % MOD;
+    inv[i] = MOD - inv[MOD % i] * (MOD / i) % MOD;
+    finv[i] = finv[i - 1] * inv[i] % MOD;
+  }
+}
+
+/* 計算 O(1) */
+long long COM(int n, int k) {
+  if (n < k)
+    return 0;
+  if (n < 0 || k < 0)
+    return 0;
+  return fac[n] * (finv[k] * finv[n - k] % MOD) % MOD;
+}
 
 int main() {
-  ll N, K;
-  cin >> N >> K;
-  vector<ll> A(N);
-  rep(i, N) {
-    cin >> A[i];
-    A[i]--;
-    A[i] %= K;
-  }
-
-  vector<int> S(N + 1);
-  rep(i, N) {
-    S[i + 1] = S[i] + A[i];
-    S[i + 1] %= K;
-  }
-
-
-  map<ll, ll> m;
-  ll ans = 0;
-  rep(i, N + 1) {
-    ll ii = i;
-    ll temp = S[i];
-    m[temp]++;
-
-    if (ii - K >= 0)
-      m[S[ii - K]]--;
-
-    ans += m[temp] - 1;
-  }
-
-  cout << ans << endl;
+  ll n;
+  cin >> n;
+  ll k;
+  cin >> k;
+  COMinit();
+  cout << COM(n + k - 1, k) << endl;
 }

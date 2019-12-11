@@ -34,34 +34,39 @@ inline bool chmax(T& a, T b) {
 }
 
 int main() {
-  ll N, K;
-  cin >> N >> K;
-  vector<ll> A(N);
-  rep(i, N) {
-    cin >> A[i];
-    A[i]--;
-    A[i] %= K;
+  int N, M;
+  cin >> N >> M;
+  string S;
+  cin >> S;
+
+  vector<int> ans;
+
+
+  int pos = 0;
+  reverse(all(S));
+  while (true) {
+    if (N - pos <= M) {
+      ans.pb(N - pos);
+      break;
+    }
+
+    int ok = false;
+    repr(i, M, 1) {
+      if (S[pos + i] == '0') {
+        ok = true;
+        pos += i;
+        ans.pb(i);
+        break;
+      }
+    }
+    if (!ok) {
+      cout << -1 << endl;
+      return 0;
+    }
   }
 
-  vector<int> S(N + 1);
-  rep(i, N) {
-    S[i + 1] = S[i] + A[i];
-    S[i + 1] %= K;
+  reverse(all(ans));
+  rep(i, sz(ans)) {
+    cout << ans[i] << ((i == sz(ans) - 1) ? "\n" : " ");
   }
-
-
-  map<ll, ll> m;
-  ll ans = 0;
-  rep(i, N + 1) {
-    ll ii = i;
-    ll temp = S[i];
-    m[temp]++;
-
-    if (ii - K >= 0)
-      m[S[ii - K]]--;
-
-    ans += m[temp] - 1;
-  }
-
-  cout << ans << endl;
 }
