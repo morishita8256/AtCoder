@@ -33,40 +33,32 @@ inline bool chmax(T& a, T b) {
   return false;
 }
 
-template <class T>
-T find_max(T l, T r, bool f(T)) {
-  T c;
-  while (r - l > 1) {
-    c = (r + l) / 2;
-    if (f(c)) {
-      l = c;
-    } else {
-      r = c;
+int main() {
+  int n, c;
+  cin >> n >> c;
+  vector<int> a(n);
+  rep(i, n) {
+    cin >> a[i];
+    a[i]--;
+  }
+
+  int ans = INF;
+  rep(e, 10) {
+    rep(o, 10) {
+      if (e == o)
+        continue;
+      int temp = 0;
+      rep(i, n) {
+        if (i % 2 == 0) {
+          if (a[i] != e)
+            temp += c;
+        } else {
+          if (a[i] != o)
+            temp += c;
+        }
+      }
+      chmin(ans, temp);
     }
   }
-
-  return l;
-}
-
-ll A, B, X;
-
-bool f(ll trial) {
-  ll keta = 0;
-  ll trial_cp = trial;
-  while (trial_cp) {
-    keta++;
-    trial_cp /= 10;
-  }
-
-  ll cost = A * trial + B * keta;
-  return cost <= X;
-}
-
-
-int main() {
-  cin >> A >> B >> X;
-  cout << find_max(0LL, (ll)1e+9 + 1, f) << endl;
-
-  if (1) {
-  }
+  cout << ans << endl;
 }

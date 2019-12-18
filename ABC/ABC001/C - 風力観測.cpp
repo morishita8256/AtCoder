@@ -14,9 +14,10 @@ typedef long long ll;
 const int INF = 1001001001;
 const ll LINF = 1001001001001001001ll;
 const int MOD = 1000000007;
+const double EPS = 1e-9;
 
 template <class T>
-inline bool chmin(T &a, T b) {
+inline bool chmin(T& a, T b) {
   if (a > b) {
     a = b;
     return true;
@@ -25,7 +26,7 @@ inline bool chmin(T &a, T b) {
 }
 
 template <class T>
-inline bool chmax(T &a, T b) {
+inline bool chmax(T& a, T b) {
   if (a < b) {
     a = b;
     return true;
@@ -34,5 +35,28 @@ inline bool chmax(T &a, T b) {
 }
 
 int main() {
-  
+  double Deg, Dis;
+  cin >> Deg >> Dis;
+
+  vector<double> sub = {0.3,  1.6,  3.4,  5.5,  8.0,  10.8,
+                        13.9, 17.2, 20.8, 24.5, 28.5, 32.7};
+  Dis /= 60.0;
+
+  int W = 0;
+  rep(i, sz(sub)) {
+    if (Dis >= sub[i] - 0.05 - EPS)
+      W++;
+  }
+
+  Deg /= 10.0;
+  Deg += 11.25;
+  int deg = Deg / 22.5;
+  deg %= 16;
+  vector<string> dir = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
+                        "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
+  string Dir = dir[deg];
+  if (W == 0)
+    Dir = "C";
+
+  cout << Dir << ' ' << W << endl;
 }

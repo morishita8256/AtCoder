@@ -33,40 +33,40 @@ inline bool chmax(T& a, T b) {
   return false;
 }
 
-template <class T>
-T find_max(T l, T r, bool f(T)) {
-  T c;
-  while (r - l > 1) {
-    c = (r + l) / 2;
-    if (f(c)) {
-      l = c;
-    } else {
-      r = c;
+
+int main() {
+  int N, M;
+  cin >> N >> M;
+  vector<vector<int>> A(N, vector<int>(M));
+  rep(i, N) {
+    rep(j, M) {
+      cin >> A[i][j];
+      A[i][j]--;
     }
   }
 
-  return l;
-}
+  int ans = INF;
+  vector<bool> use(M, true);
+  rep(i, M) {
+    vector<int> cnt(M);
+    rep(j, N) {
+      rep(k, M) {
+        if (!use[A[j][k]])
+          continue;
+        cnt[A[j][k]]++;
+        break;
+      }
+    }
 
-ll A, B, X;
+    int max_sport;
+    int max_num = 0;
+    rep(j, M) {
+      if (chmax(max_num, cnt[j]))
+        max_sport = j;
+    }
 
-bool f(ll trial) {
-  ll keta = 0;
-  ll trial_cp = trial;
-  while (trial_cp) {
-    keta++;
-    trial_cp /= 10;
+    chmin(ans, max_num);
+    use[max_sport] = false;
   }
-
-  ll cost = A * trial + B * keta;
-  return cost <= X;
-}
-
-
-int main() {
-  cin >> A >> B >> X;
-  cout << find_max(0LL, (ll)1e+9 + 1, f) << endl;
-
-  if (1) {
-  }
+  cout << ans << endl;
 }
