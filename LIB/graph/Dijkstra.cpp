@@ -9,9 +9,6 @@ struct edge {
   }
 };
 
-int V, E;
-vector<vector<edge>> G;
-vector<ll> dist;
 
 typedef pair<ll, int> P;  // <最短距離, 頂点の番号>
 
