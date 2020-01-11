@@ -147,6 +147,9 @@ struct NumberTheoreticTransform {
 https://atcoder.jp/contests/atc001/tasks/fft_c
 */
 
+/*
+元の数列の要素が大きい ~1e5 とバグるかも？
+*/
 int main() {
   int N;
   cin >> N;
