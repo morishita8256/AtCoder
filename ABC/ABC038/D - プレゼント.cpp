@@ -31,28 +31,40 @@ inline bool chmax(T& a, T b) {
   return false;
 }
 
+template <typename T>
+size_t lis(const vector<T>& a, bool strict) {
+  vector<T> lis;
+  for (auto& p : a) {
+    typename vector<T>::iterator it;
+    if (strict)
+      it = lower_bound(begin(lis), end(lis), p);
+    else
+      it = upper_bound(begin(lis), end(lis), p);
+    if (end(lis) == it)
+      lis.emplace_back(p);
+    else
+      *it = p;
+  }
+  return lis.size();
+}
+
 int main() {
   int N;
   cin >> N;
   typedef pair<int, int> P;
   vector<P> wh(N);
-  rep(i, N) cin >> wh[i].fi >> wh[i].se;
+  rep(i, N) {
+    cin >> wh[i].fi >> wh[i].se;
+    wh[i].se *= -1;
+  }
 
   sort(all(wh));
-  vector<int> h;
 
+  vector<int> H(N);
   rep(i, N) {
-    h.pb(wh[i].se);
+    H[i] = wh[i].se * -1;
   }
 
-  int M = h.size();
-
-  vector<int> LIS(N, INF);
-  rep(i, M) {
-    *lower_bound(all(LIS), h[i]) = h[i];
-  }
-  auto iter = lower_bound(all(LIS), INF);
-  int ans = distance(LIS.begin(), iter);
-
+  int ans = lis(H, true);
   cout << ans << endl;
 }
