@@ -87,7 +87,7 @@ struct mint {
   }
 };
 
-const int MAX = 2000;
+const int MAX = 1e+5 + 5;
 long long fac[MAX], finv[MAX], inv[MAX];
 
 /* 前処理 O(n) */
@@ -112,23 +112,26 @@ long long COM(int n, int k) {
 }
 
 int main() {
-  int N, K;
+  ll N, K;
   cin >> N >> K;
-  vector<int> a(K);
-  rep(i, K) {
-    cin >> a[i];
+  vector<ll> A(N);
+  rep(i, N) {
+    cin >> A[i];
   }
+
+  sort(all(A));
 
   COMinit();
-  vector<vector<mint>> dp(K + 1, vector<mint>(N + 1));
-  dp[0][0] = 1;
-  rep(k, K) {
-    rep(n, N + 1) {
-      repp(nn, 0, N - n) {
-        dp[k + 1][n + nn] += dp[k][n] * COM(N - n, nn) * COM(N - nn, a[k] - nn);
-      }
-    }
+  mint mx = 0;
+  mint mn = 0;
+
+  rep(i, N) {
+    if (i >= K - 1)
+      mx += A[i] * COM(i, K - 1);
+    if ((N - 1 - i) >= K - 1)
+      mn += A[i] * COM(N - 1 - i, K - 1);
   }
 
-  cout << dp[K][N].x << endl;
+  mint ans = mx - mn;
+  cout << ans.x << endl;
 }

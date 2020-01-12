@@ -88,50 +88,29 @@ struct mint {
 };
 
 int main() {
-  int N;
+  ll N;
   cin >> N;
 
 
-  vector<int> x(N);
+  vector<ll> x(N);
   rep(i, N) {
     cin >> x[i];
   }
 
-  if (N == 2) {
-    cout << (x[1] - x[0]) << endl;
-    return 0;
+  vector<mint> k(N - 1);
+  k[0] = 1;
+  repp(i, 1, N - 1) {
+    k[0] *= i;
   }
 
-  N--;
-
-  vector<mint> F(N + 5);
-  F[0] = 1;
-  rep(i, N + 3) {
-    F[i + 1] = F[i] * (i + 1);
-  }
-
-  vector<mint> stir(N + 5);
-  stir[0] = 0;
-  rep(i, N + 3) {
-    stir[i + 1] = stir[i] * (i + 1) + F[i];
-  }
-
-
-  vector<mint> fact(N);
-  fact[N - 1] = 1;
-  fact[N - 2] = N;
-  repr(i, N - 3, 0) {
-    fact[i] = fact[i + 1] * (i + 2);
-  }
-
-  vector<mint> k(N);
-  rep(i, N) {
-    k[i] = stir[i + 1] * fact[i];
+  rep(i, N - 2) {
+    k[i + 1] = k[i] + k[0] / (i + 2);
   }
 
   mint ans = 0;
-  rep(i, N) {
+  rep(i, N - 1) {
     ans += k[i] * (x[i + 1] - x[i]);
   }
+
   cout << ans.x << endl;
 }

@@ -34,23 +34,33 @@ inline bool chmax(T& a, T b) {
 }
 
 int main() {
-  int N;
-  cin >> N;
-  vector<int> a(N);
-  rep(i, N) {
-    cin >> a[i];
-    a[i]--;
+  int N, M;
+  cin >> N >> M;
+  vector<int> p(M);
+  vector<string> S(M);
+  rep(i, M) {
+    cin >> p[i] >> S[i];
+    p[i]--;
   }
 
-  vector<int> in(N);
-  rep(i, N) {
-    in[a[i]]++;
+  vector<bool> ac(N, false);
+  vector<int> pena(N);
+
+  rep(i, M) {
+    if (S[i] == "AC")
+      ac[p[i]] = true;
+    if (S[i] == "WA" && (!ac[p[i]]))
+      pena[p[i]]++;
   }
 
-  priority_queue<int, vector<int>, greater<int>> q;
-  rep(i, N) {
-    q.push(i);
-  }
 
-  vector<int> ans(N);
+  int acs = 0;
+  int penas = 0;
+  rep(i, N) {
+    if (ac[i]) {
+      acs++;
+      penas += pena[i];
+    }
+  }
+  cout << acs << ' ' << penas << endl;
 }
