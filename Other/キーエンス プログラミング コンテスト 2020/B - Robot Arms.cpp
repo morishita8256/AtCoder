@@ -40,16 +40,25 @@ __attribute__((constructor)) void initial() {
   cout << fixed << setprecision(15);
 }
 
-vector<vector<int>> G;
 
-int main() {
-  int N, M;
-  cin >> N >> M;
-  vector<int> A(M), B(M);
-  G = vector<vector<int>>(N);
-  rep(i, M) {
-    cin >> A[i] >> B[i];
-    A[i]--, B[i]--;
-    G[A[i]].pb(B[i]);
+signed main() {
+  ll N;
+  cin >> N;
+  typedef pair<ll, ll> P;
+  vector<P> XL(N);
+  rep(i, N) {
+    cin >> XL[i].fi >> XL[i].se;
+    XL[i].fi += XL[i].se;
   }
+  sort(all(XL));
+
+  ll L = -LINF;
+  int ans = 0;
+  rep(i, N) {
+    if (XL[i].fi - 2 * XL[i].se >= L) {
+      ans++;
+      L = XL[i].fi;
+    }
+  }
+  cout << ans << "\n";
 }

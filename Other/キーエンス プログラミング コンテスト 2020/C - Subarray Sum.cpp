@@ -40,16 +40,27 @@ __attribute__((constructor)) void initial() {
   cout << fixed << setprecision(15);
 }
 
-vector<vector<int>> G;
+signed main() {
+  ll N, K, S;
+  cin >> N >> K >> S;
 
-int main() {
-  int N, M;
-  cin >> N >> M;
-  vector<int> A(M), B(M);
-  G = vector<vector<int>>(N);
-  rep(i, M) {
-    cin >> A[i] >> B[i];
-    A[i]--, B[i]--;
-    G[A[i]].pb(B[i]);
+  ll mx = 1000000000;
+  if (S < mx) {
+    vector<ll> ans(N, mx);
+    rep(i, K) {
+      ans[i] = S;
+    }
+    rep(i, len(ans)) {
+      cout << ans[i] << ((i == len(ans) - 1) ? "\n" : " ");
+    }
+    return 0;
+  } else {
+    vector<ll> ans(N, 1);
+    rep(i, K) {
+      ans[i] = S;
+    }
+    rep(i, len(ans)) {
+      cout << ans[i] << ((i == len(ans) - 1) ? "\n" : " ");
+    }
   }
 }

@@ -40,16 +40,12 @@ __attribute__((constructor)) void initial() {
   cout << fixed << setprecision(15);
 }
 
-vector<vector<int>> G;
-
-int main() {
-  int N, M;
-  cin >> N >> M;
-  vector<int> A(M), B(M);
-  G = vector<vector<int>>(N);
-  rep(i, M) {
-    cin >> A[i] >> B[i];
-    A[i]--, B[i]--;
-    G[A[i]].pb(B[i]);
-  }
+signed main() {
+  int H, W;
+  cin >> H >> W;
+  int N;
+  cin >> N;
+  int mx = max(H, W);
+  int ans = (N + mx - 1) / mx;
+  cout << ans << "\n";
 }
