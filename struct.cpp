@@ -9,11 +9,35 @@ using namespace std;
 #define repp(i, a, b) for (int i = a; i <= (b); ++i)
 #define repr(i, a, b) for (int i = a; i >= (b); --i)
 #define bit(n) (1LL << (n))
-#define sz(x) ((ll)(x).size())
+#define len(x) ((ll)(x).size())
+#define debug(var) cout << "[" << #var << "]\n" << var << "\n"
 typedef long long ll;
 const int INF = 1001001001;
 const ll LINF = 1001001001001001001ll;
 const int MOD = 1000000007;
+const double EPS = 1e-9;
+
+template <typename T>
+ostream& operator<<(ostream& s, const vector<T>& v) {
+  int len = v.size();
+  for (int i = 0; i < len; ++i) {
+    s << v[i];
+    if (i < len - 1)
+      s << ' ';
+  }
+  return s;
+}
+
+template <typename T>
+ostream& operator<<(ostream& s, const vector<vector<T>>& vv) {
+  int len = vv.size();
+  for (int i = 0; i < len; ++i) {
+    s << vv[i];
+    if (i != len - 1)
+      cout << '\n';
+  }
+  return s;
+}
 
 template <class T>
 inline bool chmin(T& a, T b) {
@@ -33,31 +57,35 @@ inline bool chmax(T& a, T b) {
   return false;
 }
 
-struct test {
-  ll A, B, C;
-  test(ll A, ll B, ll C) : A(A), B(B), C(C) {
+__attribute__((constructor)) void initial() {
+  cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  cout << fixed << setprecision(15);
+}
+
+struct p {
+  ll x, y, z;
+  p() = default;
+  p(ll x, ll y, ll z) : x(x), y(y), z(z) {
   }
 
-  bool operator<(const test& another) const {
-    return C < another.C;
+  bool operator<(const p& another) const {
+    return y < another.y;
   };
 };
 
 
-int main() {
-  vector<test> X;
-  rep(i, 5) {
-    X.pb(test(i + 1, 5 - i, (i - 2) * (i - 2)));
+signed main() {
+  int N;
+  cin >> N;
+
+
+  vector<p> ps(N);
+  rep(i, N) {
+    cin >> ps[i].x >> ps[i].y >> ps[i].z;
   }
-
-  rep(i, 5) {
-    cout << X[i].A << ' ' << X[i].B << ' ' << X[i].C << endl;
-  }
-
-
-  sort(all(X));
-  cout << endl;
-  rep(i, 5) {
-    cout << X[i].A << ' ' << X[i].B << ' ' << X[i].C << endl;
+  sort(all(ps));
+  rep(i, N) {
+    cout << ps[i].x << ' ' << ps[i].y << ' ' << ps[i].z << "\n";
   }
 }
