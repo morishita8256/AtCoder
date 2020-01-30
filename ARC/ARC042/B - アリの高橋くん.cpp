@@ -3,12 +3,66 @@ using namespace std;
 #define pb push_back
 #define fi first
 #define se second
+#define mp make_pair
 #define all(x) (x).begin(), (x).end()
 #define rep(i, n) for (int i = 0; i < (n); ++i)
 #define repp(i, a, b) for (int i = a; i <= (b); ++i)
+#define repr(i, a, b) for (int i = a; i >= (b); --i)
+#define bit(n) (1LL << (n))
 #define len(x) ((ll)(x).size())
+#define debug(var) cout << "[" << #var << "]\n" << var << "\n"
 typedef long long ll;
-const Real EPS = 1e-9;
+const int INF = 1001001001;
+const ll LINF = 1001001001001001001ll;
+const int MOD = 1000000007;
+const double EPS = 1e-9;
+
+template <typename T>
+ostream& operator<<(ostream& s, const vector<T>& v) {
+  int len = v.size();
+  for (int i = 0; i < len; ++i) {
+    s << v[i];
+    if (i < len - 1)
+      s << ' ';
+  }
+  return s;
+}
+
+template <typename T>
+ostream& operator<<(ostream& s, const vector<vector<T>>& vv) {
+  int len = vv.size();
+  for (int i = 0; i < len; ++i) {
+    s << vv[i];
+    if (i != len - 1)
+      cout << '\n';
+  }
+  return s;
+}
+
+template <class T>
+inline bool chmin(T& a, T b) {
+  if (a > b) {
+    a = b;
+    return true;
+  }
+  return false;
+}
+
+template <class T>
+inline bool chmax(T& a, T b) {
+  if (a < b) {
+    a = b;
+    return true;
+  }
+  return false;
+}
+
+__attribute__((constructor)) void initial() {
+  cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  cout << fixed << setprecision(15);
+}
+
 
 // 実数
 using Real = double;
@@ -630,144 +684,23 @@ Real closest_pair(Points ps) {
 }
 
 
-/*
-[Constant]
-  EPS = 1e-9
-  PI
+signed main() {
+  Point p;
+  cin >> p;
+  int N;
+  cin >> N;
+  vector<Point> v(N);
+  rep(i, N) {
+    cin >> v[i];
+  }
+  v.pb(v[0]);
 
-
-[Type]
-  Real 実数
-
-  Point 点
-    Point(x, y) 座標で初期化
-    real(.), imag(.), abs(.), norm(.)...2乗ノルム
-    Point * Real
-    cin, cout
-    比較演算子<　実部->虚部で比較
-
-  Line 直線
-    Point a, b, dir 通る2点と方向ベクトル
-    Line(Point a, b) 点a, bを通るように初期化
-    Line(Real A, B, C) 式 Ax + By = C の係数で初期化
-    cout, cin 共に通る2点を利用
-
-  Segment 線分 (Lineを継承)
-    Segment(Point a, b) 端点で初期化
-
-  Circle 円
-    Point p 中心
-    Real r 半径
-    Circle(Point p, Real r) 中心と半径で初期化
-
-  Points = vector<Point>
-  Polygon = vector<Point>;
-  Segments = vector<Segment>
-  Lines = vector<Line>
-  Circles = vector<Circle>
-
-
-[Function]
-  bool eq(Real, Real)  Realの等価判定
-  Real radian_to_degree(Real)  ラジアン -> 度
-  Real degree_to_radian(Real)  度 -> ラジアン
-  Point rotate(Real theta, Point p)  点pを反時計回りにtheta回転
-  Real get_angle(Point a, Point b, Point c)  角abcの小さい方
-  Real cross(Point a, b) 外積の大きさ
-  Real dot(Point a, b) 内積
-  int ccw(Point a, b, c) 点の回転方向 ->該当箇所参照
-  bool parallel(Line a, b) 平行判定
-  bool orthogonal(Lint a, b) 垂直判定
-  Point projection(Line/Segment l, Point p) 垂線の足
-  Point reflection(Line l, Point p) 鏡像
-
-  bool intersect(Line/Segment l, Point p) 点pが線lに乗っているか
-  bool intersect(Line/Segment l, m) 線lとmが交差するか
-  bool intersect(Circle c, Line l) 円cと線lが交差するか
-  bool intersect(Circle c, Point p) 円cが点pを通るか
-  int intersect(Circle c, Segment l) 円cと線分lの交点の数
-  int intersect(Circle c1, c2) 2円の共通接線の数（交差するか）
-
-  Real distance(Point a, b) 2点の距離
-  Real distance(Line/Segment l, Point p) 線lと点pの距離
-  Real distance(Line/Segment l, m) 2線の距離（交わるなら0）
-
-  Point crosspoint(Line/Segment l, m) 2直線の交点
-  pair<Point, Point> crosspoint(Circle c, Line/Segment l) 円cと線lの交点
-  pair<Point, Point> crosspoint(Circle c1, c2) 2円の交点
-
-  pair<Point, Point> tangent(Circle c, Point p) 点pを通る円cの接線の接点
-  Lines tangent(Circle c1, c2) 2円の共通接線
-
-  bool is_convex(Polygon p) 凸性判定
-  Polygon convex_hull(Polygon p) 凸包。辺上の点も含める場合EPS -> -EPS
-  int contains(Polygon Q, Point p) 多角形Qと点pの包含関係
-  0...外, 1...上, 2...内
-  void merge_segments(Segments segs) 線分の重複除去
-  vector<vector<int>> segment_arrangement(Segments segs, Points ps)
-  線分アレンジメント（任意の2線分の交点を頂点としたグラフの構築）
-  Polygon convex_cut(Polygon U, Line l)凸多角形の切断
-  直線lで切断した左側の凸多角形
-
-  Real area(Polygon p) 多角形の面積
-  Real area(Polygon p, Circle c) 円と多角形の共通面積
-
-  Real convex_diameter(Polygon p) 凸多角形の直径（最遠頂点対間距離）
-  Real closest_pair(Points ps) 最近点対の距離
-*/
-
-
-// AOJ problems
-// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_G&lang=ja
-// 2円の共通接線
-void Common_tangent() {
-  Point p1, p2;
-  Real r1, r2;
-  cin >> p1 >> r1;
-  cin >> p2 >> r2;
-  Circle c1(p1, r1), c2(p2, r2);
-  Lines ls = tangent(c1, c2);
-
-  Points ps;
-
-  for (Line l : ls) {
-    Point p = crosspoint(c1, l).fi;
-    ps.pb(p);
+  double ans = INF;
+  rep(i, N) {
+    Segment s(v[i], v[i + 1]);
+    double temp = distance(s, p);
+    chmin(ans, temp);
   }
 
-  sort(all(ps));
-  rep(i, len(ps)) {
-    cout << ps[i] << endl;
-  }
-}
-
-// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_4_A&lang=ja
-void Convex_hull() {
-  int n;
-  cin >> n;
-  Polygon p(n);
-  rep(i, n) {
-    cin >> p[i];
-  }
-  auto ans = convex_hull(p);
-  int ind = 0;
-  Point temp = ans[0];
-  repp(i, 1, len(ans) - 1) {
-    if (imag(temp) > imag(ans[i]) ||
-        (eq(imag(temp), imag(ans[i])) && real(temp) > real(ans[i]))) {
-      ind = i;
-      temp = ans[i];
-    }
-  }
-
-  cout << len(ans) << endl;
-  rep(i, len(ans)) {
-    printf("%d %d\n", (int)round(real(ans[ind])),
-           (int)round(imag(ans[ind])));  // Lf?
-    ind++;
-    ind %= len(ans);
-  }
-}
-
-int main() {
+  cout << ans << "\n";
 }
