@@ -140,49 +140,33 @@ ll modinv(ll a) {
   return modpow(a, MOD - 2);
 }
 
-
-const int MAX = 5100000;
-long long fac[MAX], finv[MAX], inv[MAX];
-
-/* 前処理 O(n) */
-void COMinit() {
-  fac[0] = fac[1] = 1;
-  finv[0] = finv[1] = 1;
-  inv[1] = 1;
-  for (int i = 2; i < MAX; i++) {
-    fac[i] = fac[i - 1] * i % MOD;
-    inv[i] = MOD - inv[MOD % i] * (MOD / i) % MOD;
-    finv[i] = finv[i - 1] * inv[i] % MOD;
-  }
-}
-
-/* 計算 O(1) */
-long long COM(int n, int k) {
-  if (n < k)
-    return 0;
-  if (n < 0 || k < 0)
-    return 0;
-  return fac[n] * (finv[k] * finv[n - k] % MOD) % MOD;
-}
-
-ll num(ll r, ll c) {
-  return COM(r + c, r);
-}
-
-
 signed main() {
-  ll r1, c1;
-  cin >> r1 >> c1;
-  ll r2, c2;
-  cin >> r2 >> c2;
-  r1--, c1--;
+  int D;
+  cin >> D;
+  string S;
+  cin >> S;
 
-  COMinit();
+  vector<int> A;
+  for (auto c : S) {
+    A.pb(c - '0');
+  }
 
-  mint ans = 0;
-  ans += num(r2 + 1, c2 + 1) - 1;
-  ans -= num(r1 + 1, c2 + 1) - 1;
-  ans -= num(r2 + 1, c1 + 1) - 1;
-  ans += num(r1 + 1, c1 + 1) - 1;
-  cout << ans << endl;
+  int N = len(A);
+
+
+  vector<vector<vector<mint>>> dp(N + 1,
+                                  vector<vector<mint>>(2, vector<mint>(D)));
+  dp[0][0][0] = 1;  // [桁][未満][mod]
+  rep(i, N) {
+    int num = A[i];
+    rep(j, 2) {
+      rep(k, D) {
+        repp(d, 0, j ? 9 : num) {
+          dp[i + 1][j | d < num][(k + d) % D] += dp[i][j][k];
+        }
+      }
+    }
+  }
+  mint ans = dp[N][1][0] + dp[N][0][0];
+  cout << (ans - 1) << endl;
 }
