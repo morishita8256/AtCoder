@@ -10,7 +10,8 @@ struct SegmentTree {
   T ti;
   vector<T> dat;
   SegmentTree(){};
-  SegmentTree(F f, T ti) : f(f), ti(ti) {}
+  SegmentTree(F f, T ti) : f(f), ti(ti) {
+  }
 
   void init(int n_) {
     n = 1;
@@ -48,7 +49,8 @@ struct SegmentTree {
 };
 
 /*
-http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_A
+http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_A&lang=ja
+RMQ
 */
 int main() {
   int n, q;
