@@ -30,12 +30,10 @@ ostream& operator<<(ostream& s, const vector<vector<T>>& vv) {
 template <typename T>
 struct cvector {
   vector<T> vec;
-
   cvector() : vec(26) {
   }
   cvector(T init) : vec(26, init) {
   }
-
   T& operator[](char c) {
     return vec[c - 'a'];
   }

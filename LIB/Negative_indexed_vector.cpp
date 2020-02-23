@@ -26,17 +26,16 @@ ostream& operator<<(ostream& s, const vector<vector<T>>& vv) {
   return s;
 }
 
+
 ///////////////////////////////////////////////////////////
 template <typename T>
 struct nvector {
   int edge, tot;
   vector<T> vec;
-
   nvector(int edge) : edge(edge), tot(edge * 2 + 1), vec(tot) {
   }
   nvector(int edge, T init) : edge(edge), tot(edge * 2 + 1), vec(tot, init) {
   }
-
   T& operator[](int pos) {
     return vec[pos + edge];
   }
