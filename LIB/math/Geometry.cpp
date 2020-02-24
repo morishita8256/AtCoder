@@ -73,6 +73,9 @@ namespace std {
 bool operator<(const Point& a, const Point& b) {
   return !eq(a.real(), b.real()) ? a.real() < b.real() : a.imag() < b.imag();
 }
+bool operator==(const Point& a, const Point& b) {
+  return abs(a - b) < EPS;
+}
 }  // namespace std
 
 
