@@ -27,6 +27,7 @@ ostream& operator<<(ostream& s, const vector<vector<T>>& vv) {
 }
 
 ///////////////////////////////////////////////////////////
+
 template <typename T>
 struct cvector {
   vector<T> vec;
@@ -44,6 +45,7 @@ ostream& operator<<(ostream& s, const cvector<T>& cvector) {
   s << cvector.vec;
   return s;
 }
+
 ///////////////////////////////////////////////////////////
 
 
