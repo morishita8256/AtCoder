@@ -1,16 +1,19 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define pb push_back
-#define fi first
-#define se second
-#define mp make_pair
-#define all(x) (x).begin(), (x).end()
 #define rep(i, n) for (int i = 0; i < (n); ++i)
-#define repp(i, a, b) for (int i = a; i <= (b); ++i)
-#define repr(i, a, b) for (int i = a; i >= (b); --i)
 #define bit(n) (1LL << (n))
-#define sz(x) ((int)(x).size())
-typedef long long ll;
+
+template <typename T>
+ostream& operator<<(ostream& s, const vector<T>& v) {
+  int len = v.size();
+  for (int i = 0; i < len; ++i) {
+    s << v[i];
+    if (i < len - 1)
+      s << ' ';
+  }
+  return s;
+}
+
 
 // 3-bit
 int bit3(int n) {
