@@ -29,7 +29,7 @@ struct SegmentTree {
       dat[i] = f(dat[(i << 1) | 0], dat[(i << 1) | 1]);
   }
 
-  void set_val(int k, T x) {
+  void update(int k, T x) {
     dat[k += n] = x;
     while (k >>= 1)
       dat[k] = f(dat[(k << 1) | 0], dat[(k << 1) | 1]);
@@ -67,7 +67,7 @@ int main() {
     if (com[i]) {
       cout << seg.query(x[i], y[i] + 1) << endl;
     } else {
-      seg.set_val(x[i], y[i]);
+      seg.update(x[i], y[i]);
     }
   }
 }
