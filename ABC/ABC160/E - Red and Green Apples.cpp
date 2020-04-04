@@ -86,6 +86,21 @@ signed main() {
   sort(all(q), greater<int>());
   sort(all(r), greater<int>());
 
-  
+  vector<int> m;
+  rep(i, X) {
+    m.pb(p[i]);
+  }
+  rep(i, Y) {
+    m.pb(q[i]);
+  }
+  rep(i, C) {
+    m.pb(r[i]);
+  }
 
+  sort(all(m), greater<int>());
+  int ans = 0;
+  rep(i, X + Y) {
+    ans += m[i];
+  }
+  cout << ans << endl;
 }

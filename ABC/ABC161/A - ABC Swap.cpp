@@ -59,87 +59,14 @@ inline bool chmax(T& a, T b) {
 }
 
 __attribute__((constructor)) void initial() {
-  cin.tie(nullptr);
-  ios::sync_with_stdio(false);
+cin.tie(nullptr);
+ios::sync_with_stdio(false);
   cout << fixed << setprecision(15);
 }
 
 signed main() {
-  int H, W, K;
-  cin >> H >> W >> K;
-  vector<vector<int>> S(H, vector<int>(W));
-  rep(i, H) {
-    rep(j, W) {
-      char c;
-      cin >> c;
-      S[i][j] = c - '0';
-    }
-  }
-
-  int ans = INF;
-  /* 2bit */
-  rep(b, bit(H - 1)) {
-    int temp = __builtin_popcount(b);
-    int G = temp + 1;
-
-    vector<int> cut(H - 1);
-    rep(i, H - 1) {
-      if ((b >> i) & 1)
-        cut[i] = 1;
-      else
-        cut[i] = 0;
-    }
-
-    vector<int> r2g(H);  // row to group
-    rep(i, H - 1) {
-      r2g[i + 1] = r2g[i] + cut[i];
-    }
-
-    vector<int> group(G);
-    rep(i, H) {
-      group[r2g[i]] += S[i][0];
-    }
-
-    bool ok = true;
-    rep(g, G) {
-      if (group[g] > K)
-        ok = false;
-    }
-    if (!ok)
-      continue;
-
-    repp(j, 1, W - 1) {
-      rep(i, H) {
-        group[r2g[i]] += S[i][j];
-      }
-
-      bool ok = true;
-      rep(g, G) {
-        if (group[g] > K)
-          ok = false;
-      }
-
-      if (ok)
-        continue;
-
-      temp++;
-      rep(g, G) {
-        group[g] = 0;
-      }
-      rep(i, H) {
-        group[r2g[i]] += S[i][j];
-      }
-      ok = true;
-      rep(g, G) {
-        if (group[g] > K)
-          ok = false;
-      }
-      if (!ok) {
-        temp = INF;
-        break;
-      }
-    }
-    chmin(ans, temp);
-  }
-  cout << ans << endl;
+  int X, Y, Z;
+  cin >> X >> Y >> Z;
+  cout << Z << ' ' << X << ' ' << Y << endl;
+  
 }
