@@ -59,15 +59,17 @@ inline bool chmax(T& a, T b) {
 }
 
 __attribute__((constructor)) void initial() {
-cin.tie(nullptr);
-ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  ios::sync_with_stdio(false);
   cout << fixed << setprecision(15);
 }
 
-vector<int> A;
-
-
 signed main() {
-  A.assign(3, INF);
-  cout << A << endl;
+  string S;
+  cin >> S;
+
+  if (S == "ABC")
+    cout << "ARC" << endl;
+  else
+    cout << "ABC" << endl;
 }
