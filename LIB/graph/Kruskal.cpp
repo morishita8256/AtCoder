@@ -3,6 +3,7 @@ using namespace std;
 typedef long long ll;
 const ll LINF = 1001001001001001001ll;
 
+
 struct UnionFind {
   vector<int> parent;  // parent[root] is the negative of the size.
   UnionFind(int n) : parent(n, -1){};
@@ -28,29 +29,34 @@ struct UnionFind {
   }
 };
 
+/*
+  edge(from, to, cost)
+  not directed
+*/
+template <typename T>
 struct edge {
   int from, to;
-  ll cost;
+  T cost;
 
-  edge(int from, int to, ll cost) : from(from), to(to), cost(cost) {}
+  edge(int from, int to, T cost) : from(from), to(to), cost(cost) {
+  }
 
   bool operator<(const edge& o) const {
     return cost < o.cost;
   }
 };
 
-int V, E;
-vector<edge> G;
 
 /* O(E log V) */
-ll kruskal() {
+template <typename T>
+T kruskal(vector<edge<T>>& G, int V, int E) {
   sort(G.begin(), G.end());
 
   UnionFind uf(V);
-  ll min_cost = 0;
+  T min_cost = 0;
 
   for (int ei = 0; ei < E; ei++) {
-    edge e = G[ei];
+    edge<T> e = G[ei];
     if (!uf.issame(e.from, e.to)) {
       min_cost += e.cost;
       uf.unite(e.from, e.to);
@@ -60,14 +66,20 @@ ll kruskal() {
   return min_cost;
 }
 
+/*
+http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_2_A&lang=ja
+*/
+
 int main() {
-  // V = ;
-  // E = ;
+  int V, E;
+  cin >> V >> E;
+
+  vector<edge<int>> G;
   for (int i = 0; i < E; i++) {
-    ll from, to, cost;
-    // 
-    G.push_back(edge(from, to, cost));
+    int s, t, w;
+    cin >> s >> t >> w;
+    G.push_back(edge<int>(s, t, w));
   }
 
-  cout << kruskal() << endl;
+  cout << kruskal(G, V, E) << endl;
 }
