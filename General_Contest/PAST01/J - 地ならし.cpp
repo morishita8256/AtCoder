@@ -59,10 +59,45 @@ inline bool chmax(T& a, T b) {
 }
 
 __attribute__((constructor)) void initial() {
-cin.tie(nullptr);
-ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  ios::sync_with_stdio(false);
   cout << fixed << setprecision(15);
 }
+
+struct edge {
+  int to, cost;
+  edge(int to, int cost) : to(to), cost(cost) {
+  }
+};
+
+
+typedef pair<ll, int> P;  // <最短距離, 頂点の番号>
+
+/* 負閉路の検出はできない。O(E logV) */
+/* 負の辺があってもダメ */
+void dijkstra(int V, int E, vector<vector<edge>>& G, vector<ll>& dist, int s) {
+  priority_queue<P, vector<P>, greater<P>> que;
+  fill(dist.begin(), dist.end(), LINF);
+  dist[s] = 0;
+  que.push(P(0, s));
+
+  while (!que.empty()) {
+    P p = que.top();
+    que.pop();
+    int v = p.second;
+    if (dist[v] < p.first)
+      continue;
+
+    for (int i = 0; i < G[v].size(); ++i) {
+      edge e = G[v][i];
+      if (dist[e.to] > dist[v] + e.cost) {
+        dist[e.to] = dist[v] + e.cost;
+        que.push(P(dist[e.to], e.to));
+      }
+    }
+  }
+}
+
 
 signed main() {
   int H, W;
@@ -73,5 +108,37 @@ signed main() {
       cin >> A[i][j];
     }
   }
-  
+
+  int V = H * W;
+  int E = 0;
+
+  vector<vector<edge>> G(V);
+  int di[4] = {0, -1, 0, 1}, dj[4] = {1, 0, -1, 0};
+
+  rep(v, V) {
+    int i = v / W, j = v % W;
+    rep(d, 4) {
+      int ni = i + di[d], nj = j + dj[d];
+      if (ni < 0 || ni >= H || nj < 0 || nj >= W)
+        continue;
+      int nv = ni * W + nj;
+      G[v].pb(edge(nv, A[ni][nj]));
+      E++;
+    }
+  }
+
+  int ans = INF;
+  int s = (H - 1) * W, m = V - 1, g = W - 1;
+  vector<int> ds(V), dm(V), dg(V);
+  dijkstra(V, E, G, ds, s);
+  dijkstra(V, E, G, dm, m);
+  dijkstra(V, E, G, dg, g);
+
+  rep(v, V) {
+    int i = v / W, j = v % W;
+    int temp = ds[v] + dm[v] + dg[v] - A[i][j] * 2;
+    chmin(ans, temp);
+  }
+
+  cout << ans << endl;
 }

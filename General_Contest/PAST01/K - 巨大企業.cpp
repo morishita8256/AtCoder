@@ -9,11 +9,36 @@ using namespace std;
 #define repp(i, a, b) for (int i = a; i <= (b); ++i)
 #define repr(i, a, b) for (int i = a; i >= (b); --i)
 #define bit(n) (1LL << (n))
-#define sz(x) ((ll)(x).size())
+#define len(x) ((ll)(x).size())
+#define debug(var) cout << "[" << #var << "]\n" << var << endl
+#define int long long
 typedef long long ll;
-const int INF = 1001001001;
+const int INF = 1001001001001001001ll;
 const ll LINF = 1001001001001001001ll;
 const int MOD = 1000000007;
+const double EPS = 1e-9;
+
+template <typename T>
+ostream& operator<<(ostream& s, const vector<T>& v) {
+  int len = v.size();
+  for (int i = 0; i < len; ++i) {
+    s << v[i];
+    if (i < len - 1)
+      s << ' ';
+  }
+  return s;
+}
+
+template <typename T>
+ostream& operator<<(ostream& s, const vector<vector<T>>& vv) {
+  int len = vv.size();
+  for (int i = 0; i < len; ++i) {
+    s << vv[i];
+    if (i != len - 1)
+      s << '\n';
+  }
+  return s;
+}
 
 template <class T>
 inline bool chmin(T& a, T b) {
@@ -32,6 +57,13 @@ inline bool chmax(T& a, T b) {
   }
   return false;
 }
+
+__attribute__((constructor)) void initial() {
+  cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  cout << fixed << setprecision(15);
+}
+
 
 template <typename G>
 struct DoublingLowestCommonAncestor {
@@ -86,32 +118,37 @@ struct DoublingLowestCommonAncestor {
   }
 };
 
-/*
-http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_5_C&lang=jp
-*/
+signed main() {
+  int N;
+  cin >> N;
 
-int main() {
-  int n;
-  cin >> n;
+  vector<vector<int>> G(N);
+  vector<int> p(N);
 
-  vector<vector<int>> G(n);
-  rep(i, n) {
-    int k;
-    cin >> k;
-    rep(j, k) {
-      int c;
-      cin >> c;
-      G[i].pb(c);
-    }
+  int root;
+  rep(i, N) {
+    cin >> p[i];
+    p[i]--;
+    if (p[i] == -2)
+      root = i;
+    else
+      G[p[i]].pb(i);
   }
 
-  DoublingLowestCommonAncestor<vector<vector<int>>> g(G, 0);
+  DoublingLowestCommonAncestor<vector<vector<int>>> g(G, root);
   g.build();
-  int q;
-  cin >> q;
-  while (q-- > 0) {
-    int u, v;
-    cin >> u >> v;
-    cout << g.query(u, v) << endl;
+
+
+  int Q;
+  cin >> Q;
+  while (Q-- > 0) {
+    int a, b;
+    cin >> a >> b;
+    a--, b--;
+
+    if (g.query(a, b) == b)
+      cout << "Yes\n";
+    else
+      cout << "No\n";
   }
 }
