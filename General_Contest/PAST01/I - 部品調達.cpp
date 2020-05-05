@@ -64,28 +64,70 @@ __attribute__((constructor)) void initial() {
   cout << fixed << setprecision(15);
 }
 
-
-signed main() {
-  int N;
-  cin >> N;
-  vector<int> A(N);
-  rep(i, N) {
-    cin >> A[i];
+struct edge {
+  int to, cost;
+  edge(int to, int cost) : to(to), cost(cost) {
   }
+};
 
-  int skip = 1 + N % 2;
-  vector<vector<int>> dp(N + 2, vector<int>(skip + 1, -INF));
-  dp[0][0] = 0;
 
-  rep(i, N + 1) {
-    rep(j, skip + 1) {
-      if (j < skip)
-        chmax(dp[i + 1][j + 1], dp[i][j]);
+typedef pair<ll, int> P;  // <最短距離, 頂点の番号>
 
-      if (i < N)
-        chmax(dp[i + 2][j], dp[i][j] + A[i]);
+/* 負閉路の検出はできない。O(E logV) */
+/* 負の辺があってもダメ */
+void dijkstra(int V, int E, vector<vector<edge>>& G, vector<ll>& dist, int s) {
+  priority_queue<P, vector<P>, greater<P>> que;
+  fill(dist.begin(), dist.end(), LINF);
+  dist[s] = 0;
+  que.push(P(0, s));
+
+  while (!que.empty()) {
+    P p = que.top();
+    que.pop();
+    int v = p.second;
+    if (dist[v] < p.first)
+      continue;
+
+    for (int i = 0; i < G[v].size(); ++i) {
+      edge e = G[v][i];
+      if (dist[e.to] > dist[v] + e.cost) {
+        dist[e.to] = dist[v] + e.cost;
+        que.push(P(dist[e.to], e.to));
+      }
     }
   }
-  int ans = dp[N + 1][skip];
+}
+
+signed main() {
+  int N, M;
+  cin >> N >> M;
+  vector<string> S(M);
+  vector<int> C(M);
+  rep(i, M) {
+    cin >> S[i] >> C[i];
+  }
+
+  int V = 1 << N;
+  vector<vector<edge>> G(V);
+  rep(i, M) {
+    int temp = 0;
+    rep(n, N) {
+      if (S[i][n] == 'Y')
+        temp += (1 << n);
+    }
+
+    rep(j, V) {
+      G[j].pb(edge(j | temp, C[i]));
+    }
+  }
+
+
+  vector<ll> dist(V);
+  dijkstra(V, V * M, G, dist, 0);
+
+  int ans = dist[V - 1];
+  if (ans == INF)
+    ans = -1;
+
   cout << ans << endl;
 }

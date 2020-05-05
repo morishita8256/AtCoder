@@ -64,28 +64,12 @@ __attribute__((constructor)) void initial() {
   cout << fixed << setprecision(15);
 }
 
-
 signed main() {
-  int N;
-  cin >> N;
-  vector<int> A(N);
-  rep(i, N) {
-    cin >> A[i];
+  vector<int> nums(6);
+  rep(i, 6) {
+    cin >> nums[i];
   }
-
-  int skip = 1 + N % 2;
-  vector<vector<int>> dp(N + 2, vector<int>(skip + 1, -INF));
-  dp[0][0] = 0;
-
-  rep(i, N + 1) {
-    rep(j, skip + 1) {
-      if (j < skip)
-        chmax(dp[i + 1][j + 1], dp[i][j]);
-
-      if (i < N)
-        chmax(dp[i + 2][j], dp[i][j] + A[i]);
-    }
-  }
-  int ans = dp[N + 1][skip];
+  sort(all(nums));
+  int ans = nums[3];
   cout << ans << endl;
 }

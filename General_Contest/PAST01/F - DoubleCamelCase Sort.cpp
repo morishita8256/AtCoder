@@ -64,28 +64,48 @@ __attribute__((constructor)) void initial() {
   cout << fixed << setprecision(15);
 }
 
+bool isCamel(char c) {
+  return 'A' <= c && c <= 'Z';
+}
+
+void toLower(string& S) {
+  S[0] = S[0] - 'A' + 'a';
+  S[len(S) - 1] = S[len(S) - 1] - 'A' + 'a';
+}
+
+void toUpper(string& S) {
+  S[0] = S[0] - 'a' + 'A';
+  S[len(S) - 1] = S[len(S) - 1] - 'a' + 'A';
+}
+
 
 signed main() {
-  int N;
-  cin >> N;
-  vector<int> A(N);
-  rep(i, N) {
-    cin >> A[i];
+  string S;
+  cin >> S;
+
+  vector<string> words;
+
+  int i = 0;
+  int j;
+
+  while (i < len(S)) {
+    j = i + 1;
+    while (!isCamel(S[j]))
+      j++;
+    words.pb(S.substr(i, j - i + 1));
+    i = j + 1;
   }
 
-  int skip = 1 + N % 2;
-  vector<vector<int>> dp(N + 2, vector<int>(skip + 1, -INF));
-  dp[0][0] = 0;
-
-  rep(i, N + 1) {
-    rep(j, skip + 1) {
-      if (j < skip)
-        chmax(dp[i + 1][j + 1], dp[i][j]);
-
-      if (i < N)
-        chmax(dp[i + 2][j], dp[i][j] + A[i]);
-    }
+  int M = len(words);
+  rep(i, M) {
+    toLower(words[i]);
   }
-  int ans = dp[N + 1][skip];
-  cout << ans << endl;
+
+  sort(all(words));
+
+  rep(i, M) {
+    toUpper(words[i]);
+    cout << words[i];
+  }
+  cout << '\n';
 }

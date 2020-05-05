@@ -23,8 +23,6 @@ ostream& operator<<(ostream& s, const vector<T>& v) {
   int len = v.size();
   for (int i = 0; i < len; ++i) {
     s << v[i];
-    if (i < len - 1)
-      s << ' ';
   }
   return s;
 }
@@ -64,28 +62,52 @@ __attribute__((constructor)) void initial() {
   cout << fixed << setprecision(15);
 }
 
-
 signed main() {
-  int N;
-  cin >> N;
-  vector<int> A(N);
-  rep(i, N) {
-    cin >> A[i];
-  }
+  int N, Q;
+  cin >> N >> Q;
 
-  int skip = 1 + N % 2;
-  vector<vector<int>> dp(N + 2, vector<int>(skip + 1, -INF));
-  dp[0][0] = 0;
 
-  rep(i, N + 1) {
-    rep(j, skip + 1) {
-      if (j < skip)
-        chmax(dp[i + 1][j + 1], dp[i][j]);
+  vector<vector<char>> ans(N, vector<char>(N, 'N'));
 
-      if (i < N)
-        chmax(dp[i + 2][j], dp[i][j] + A[i]);
+  while (Q-- > 0) {
+    int q;
+    cin >> q;
+
+    if (q == 1) {
+      int a, b;
+      cin >> a >> b;
+      a--, b--;
+      ans[a][b] = 'Y';
+    } else if (q == 2) {
+      int a;
+      cin >> a;
+      a--;
+      rep(i, N) {
+        if (ans[i][a] == 'Y')
+          ans[a][i] = 'Y';
+      }
+    } else {
+      int a;
+      cin >> a;
+      a--;
+
+      set<int> s;
+      rep(j, N) {
+        if (ans[a][j] == 'Y') {
+          rep(jj, N) {
+            if (ans[j][jj] == 'Y')
+              s.insert(jj);
+          }
+        }
+      }
+      for (int b : s)
+        ans[a][b] = 'Y';
     }
   }
-  int ans = dp[N + 1][skip];
+
+  rep(i, N) {
+    ans[i][i] = 'N';
+  }
+
   cout << ans << endl;
 }

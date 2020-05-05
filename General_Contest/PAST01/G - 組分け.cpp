@@ -64,28 +64,47 @@ __attribute__((constructor)) void initial() {
   cout << fixed << setprecision(15);
 }
 
+int bit3(int n) {
+  int temp = 1;
+  rep(i, n) {
+    temp *= 3;
+  }
+  return temp;
+}
+
+int shift3(int b, int n) {
+  rep(i, n) {
+    b /= 3;
+  }
+  return b;
+}
 
 signed main() {
   int N;
   cin >> N;
-  vector<int> A(N);
-  rep(i, N) {
-    cin >> A[i];
-  }
 
-  int skip = 1 + N % 2;
-  vector<vector<int>> dp(N + 2, vector<int>(skip + 1, -INF));
-  dp[0][0] = 0;
+  vector<vector<int>> A;
 
-  rep(i, N + 1) {
-    rep(j, skip + 1) {
-      if (j < skip)
-        chmax(dp[i + 1][j + 1], dp[i][j]);
-
-      if (i < N)
-        chmax(dp[i + 2][j], dp[i][j] + A[i]);
+  repp(i, 0, N - 2) {
+    repp(j, i + 1, N - 1) {
+      int a;
+      cin >> a;
+      A.pb(vector<int>{i, j, a});
     }
   }
-  int ans = dp[N + 1][skip];
+
+  int ans = -INF;
+  vector<int> group(N);
+  rep(b, bit3(N)) {
+    rep(i, N) {
+      group[i] = shift3(b, i) % 3;  // 0 or 1 or 2
+    }
+
+    int temp = 0;
+    for (auto v : A) {
+      temp += v[2] * (group[v[0]] == group[v[1]]);
+    }
+    chmax(ans, temp);
+  }
   cout << ans << endl;
 }
