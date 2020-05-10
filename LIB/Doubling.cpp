@@ -8,7 +8,7 @@ struct Doubling {
   const int LOG;
   vector<vector<int> > table;
 
-  Doubling(int sz, int64_t lim_t) : LOG(64 - __builtin_clzll(lim_t)) {
+  Doubling(int sz, int64_t lim_t = 1e+10) : LOG(64 - __builtin_clzll(lim_t)) {
     table.assign(LOG, vector<int>(sz, -1));
   }
 
@@ -59,7 +59,7 @@ int main() {
     swap(B[A[i]], B[A[i] + 1]);
   }
 
-  Doubling d(N, 1e+10);
+  Doubling d(N);
 
   rep(i, N) {
     d.set_next(i, B[i]);
