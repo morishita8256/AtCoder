@@ -64,9 +64,52 @@ __attribute__((constructor)) void initial() {
   cout << fixed << setprecision(15);
 }
 
+
+struct edge {
+  ll to, cost;
+  edge(ll to, ll cost) : to(to), cost(cost) {
+  }
+};
+
+
+typedef pair<ll, int> P;  // <最短距離, 頂点の番号>
+
+/* 負閉路の検出はできない。O(E logV) */
+/* 負の辺があってもダメ */
+void dijkstra(int V, int E, vector<vector<edge>>& G, vector<ll>& dist, int s) {
+  priority_queue<P, vector<P>, greater<P>> que;
+  fill(dist.begin(), dist.end(), LINF);
+  dist[s] = 0;
+  que.push(P(0, s));
+
+  while (!que.empty()) {
+    P p = que.top();
+    que.pop();
+    int v = p.second;
+    if (dist[v] < p.first)
+      continue;
+
+    for (int i = 0; i < G[v].size(); ++i) {
+      edge e = G[v][i];
+      if (dist[e.to] > dist[v] + e.cost) {
+        dist[e.to] = dist[v] + e.cost;
+        que.push(P(dist[e.to], e.to));
+      }
+    }
+  }
+}
+
+int Smax = 2500;
+int toV(int ind, int s) {
+  return ind * (Smax + 1) + s;
+}
+
 signed main() {
   int N, M, S;
   cin >> N >> M >> S;
+
+  chmin(S, Smax);
+
   vector<int> U(M), V(M), A(M), B(M);
   rep(i, M) {
     cin >> U[i] >> V[i] >> A[i] >> B[i];
@@ -75,5 +118,46 @@ signed main() {
   vector<int> C(N), D(N);
   rep(i, N) {
     cin >> C[i] >> D[i];
+  }
+
+  int Ver = N * (Smax + 1);
+  int E = 0;
+  vector<vector<edge>> G(Ver);
+  rep(i, M) {
+    repp(s, 0, Smax) {
+      int ns = s - A[i];
+      if (ns < 0)
+        continue;
+      G[toV(U[i], s)].pb(edge(toV(V[i], ns), B[i]));
+      G[toV(V[i], s)].pb(edge(toV(U[i], ns), B[i]));
+      E += 2;
+    }
+  }
+  rep(i, N) {
+    repp(s, 0, Smax) {
+      int ns = s + C[i];
+      if (ns > Smax)
+        continue;
+      G[toV(i, s)].pb(edge(toV(i, ns), D[i]));
+      E++;
+    }
+  }
+
+  vector<int> dist(Ver);
+  int s = toV(0, S);
+  dijkstra(Ver, E, G, dist, s);
+
+  vector<int> ans(N - 1);
+  rep(i, N - 1) {
+    int g = i + 1;
+    int mn = INF;
+    repp(j, toV(g, 0), toV(g, Smax)) {
+      chmin(mn, dist[j]);
+    }
+    ans[i] = mn;
+  }
+
+  rep(i, len(ans)) {
+    cout << ans[i] << endl;
   }
 }

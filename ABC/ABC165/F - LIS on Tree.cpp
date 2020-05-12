@@ -64,5 +64,58 @@ __attribute__((constructor)) void initial() {
   cout << fixed << setprecision(15);
 }
 
+typedef pair<int, int> P;  // index, original_value
+
+int N;
+vector<int> a, dp, ans;
+vector<vector<int>> G;
+stack<P> st;
+
+void dfs(int par, int now) {
+  int temp_a = a[now];
+  auto iter = lower_bound(all(dp), temp_a);
+  int ind = distance(dp.begin(), iter);
+  st.push(P(ind, dp[ind]));
+  dp[ind] = temp_a;
+
+  iter = lower_bound(all(dp), INF);
+  int inf_ind = distance(dp.begin(), iter);
+
+  ans[now] = inf_ind;
+  for (int next : G[now]) {
+    if (next == par)
+      continue;
+    dfs(now, next);
+  }
+
+  auto ind_val = st.top();
+  st.pop();
+  dp[ind_val.fi] = ind_val.se;
+}
+
+
 signed main() {
+  cin >> N;
+  a.assign(N, 0);
+  rep(i, N) {
+    cin >> a[i];
+  }
+
+  G.assign(N, vector<int>(0));
+  vector<int> u(N - 1), v(N - 1);
+  rep(i, N - 1) {
+    cin >> u[i] >> v[i];
+    u[i]--, v[i]--;
+    G[u[i]].pb(v[i]);
+    G[v[i]].pb(u[i]);
+  }
+
+
+  ans.assign(N, 0);
+  dp.assign(N, INF);
+
+  dfs(-1, 0);
+  rep(i, len(ans)) {
+    cout << ans[i] << endl;
+  }
 }
