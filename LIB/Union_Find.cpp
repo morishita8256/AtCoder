@@ -3,6 +3,8 @@ using namespace std;
 
 typedef long long ll;
 
+#pragma region UnionFind
+
 /* O(log n) */
 struct UnionFind {
   vector<int> parent;  // parent[root] is the negative of the size.
@@ -28,3 +30,4 @@ struct UnionFind {
     return -parent[root(u)];
   }
 };
+#pragma endregion

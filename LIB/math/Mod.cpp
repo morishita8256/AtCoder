@@ -2,6 +2,8 @@
 typedef long long ll;
 const int MOD = 1000000007;
 using namespace std;
+
+#pragma region mod
 struct mint {
   ll x;
   mint(ll x = 0) : x((x % MOD + MOD) % MOD) {
@@ -55,12 +57,17 @@ struct mint {
     mint res(*this);
     return res /= a;
   }
-};
 
-ostream& operator<<(ostream& s, const mint a) {
-  s << a.x;
-  return s;
-}
+  // 入出力
+  friend ostream& operator<<(ostream& s, const mint a) {
+    s << a.x;
+    return s;
+  }
+  friend istream& operator>>(istream& s, mint& a) {
+    s >> a.x;
+    return s;
+  }
+};
 
 /* a^n (MOD) の計算 O(log n) */
 ll modpow(ll a, ll n) {
@@ -78,6 +85,7 @@ ll modpow(ll a, ll n) {
 ll modinv(ll a) {
   return modpow(a, MOD - 2);
 }
+#pragma endregion
 
 int main() {
   mint x = 1;
