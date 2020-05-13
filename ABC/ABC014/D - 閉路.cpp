@@ -1,3 +1,4 @@
+#pragma region head
 #include <bits/stdc++.h>
 using namespace std;
 #define pb push_back
@@ -9,11 +10,36 @@ using namespace std;
 #define repp(i, a, b) for (int i = a; i <= (b); ++i)
 #define repr(i, a, b) for (int i = a; i >= (b); --i)
 #define bit(n) (1LL << (n))
-#define sz(x) ((ll)(x).size())
+#define len(x) ((ll)(x).size())
+#define debug(var) cout << "[" << #var << "]\n" << var << endl
+#define int long long
 typedef long long ll;
-const int INF = 1001001001;
+const int INF = 1001001001001001001ll;
 const ll LINF = 1001001001001001001ll;
 const int MOD = 1000000007;
+const double EPS = 1e-9;
+
+template <typename T>
+ostream& operator<<(ostream& s, const vector<T>& v) {
+  int len = v.size();
+  for (int i = 0; i < len; ++i) {
+    s << v[i];
+    if (i < len - 1)
+      s << ' ';
+  }
+  return s;
+}
+
+template <typename T>
+ostream& operator<<(ostream& s, const vector<vector<T>>& vv) {
+  int len = vv.size();
+  for (int i = 0; i < len; ++i) {
+    s << vv[i];
+    if (i != len - 1)
+      s << '\n';
+  }
+  return s;
+}
 
 template <class T>
 inline bool chmin(T& a, T b) {
@@ -32,6 +58,13 @@ inline bool chmax(T& a, T b) {
   }
   return false;
 }
+
+__attribute__((constructor)) void initial() {
+  cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  cout << fixed << setprecision(15);
+}
+#pragma endregion
 
 #pragma region LCA
 template <typename G>
@@ -88,32 +121,47 @@ struct DoublingLowestCommonAncestor {
 };
 #pragma endregion
 
-/*
-http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_5_C&lang=jp
-*/
+int N;
+vector<int> depth;
+vector<vector<int>> Graw, G;
 
-int main() {
-  int n;
-  cin >> n;
-
-  vector<vector<int>> G(n);
-  rep(i, n) {
-    int k;
-    cin >> k;
-    rep(j, k) {
-      int c;
-      cin >> c;
-      G[i].pb(c);
-    }
+void dfs(int par, int cur) {
+  for (int chi : Graw[cur]) {
+    if (par == chi)
+      continue;
+    depth[chi] = depth[cur] + 1;
+    G[cur].pb(chi);
+    dfs(cur, chi);
   }
+}
+
+signed main() {
+  cin >> N;
+  vector<int> x(N - 1), y(N - 1);
+  Graw = vector<vector<int>>(N);
+  rep(i, N - 1) {
+    cin >> x[i] >> y[i];
+    x[i]--, y[i]--;
+    Graw[x[i]].pb(y[i]);
+    Graw[y[i]].pb(x[i]);
+  }
+
+  depth = vector<int>(N);
+  G = vector<vector<int>>(N);
+
+  dfs(-1, 0);
 
   DoublingLowestCommonAncestor<vector<vector<int>>> g(G, 0);
   g.build();
-  int q;
-  cin >> q;
-  while (q-- > 0) {
-    int u, v;
-    cin >> u >> v;
-    cout << g.query(u, v) << endl;
+
+  int Q;
+  cin >> Q;
+  vector<int> a(Q), b(Q);
+  rep(i, Q) {
+    cin >> a[i] >> b[i];
+    a[i]--, b[i]--;
+    int lca = g.query(a[i], b[i]);
+    int ans = abs(depth[lca] - depth[a[i]]) + abs(depth[lca] - depth[b[i]]) + 1;
+    cout << ans << endl;
   }
 }

@@ -58,11 +58,6 @@ inline bool chmax(T& a, T b) {
   return false;
 }
 
-__attribute__((constructor)) void initial() {
-  cin.tie(nullptr);
-  ios::sync_with_stdio(false);
-  cout << fixed << setprecision(15);
-}
 
 signed main() {
   int N;
@@ -90,10 +85,13 @@ signed main() {
       return 0;
 
     int lm = (m - l - 1) % 2, mr = (r - m - 1) % 2;
-    if (lm ^ (L == s))
+    if (lm ^ (L == s)) {
       r = m;
-    else
+      R = s;
+    } else {
       l = m;
+      L = s;
+    }
   }
 
   cout << l << endl;
