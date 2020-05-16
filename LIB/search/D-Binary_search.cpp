@@ -2,42 +2,40 @@
 using namespace std;
 #define all(x) (x).begin(), (x).end()
 #define rep(i, n) for (int i = 0; i < (n); ++i)
+#define int long long
 typedef long long ll;
-
-
 #define double long double
-double EPS = 1.0e-14;
-double find_max(double l, double r, bool f(double)) {
-  double c;
-  while (abs(r - l) > EPS) {
-    c = (r + l) / 2.0;
-    if (f(c)) {
-      l = c;
-    } else {
-      r = c;
-    }
-  }
+typedef double ld;
+const double EPS = 1e-9;
 
-  return l;
+__attribute__((constructor)) void initial() {
+  cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  cout << fixed << setprecision(15);
 }
 
-double find_min(double l, double r, bool f(double)) {
+// 引数は(ok, ng)
+#pragma region bin_search
+bool f(double);
+double bin_search(double ok, double ng) {
   double c;
-  while (abs(r - l) > EPS) {
-    c = (r + l) / 2.0;
+  int cnt = 100;
+  while (abs(ok - ng) > EPS && cnt-- > 0) {
+    c = (ok + ng) / 2.0;
     if (f(c)) {
-      r = c;
+      ok = c;
     } else {
-      l = c;
+      ng = c;
     }
   }
-
-  return r;
+  return ok;
 }
+#pragma endregion
 
 /*
 https://atcoder.jp/contests/abc034/tasks/abc034_d
 */
+
 int N, K;
 vector<double> w;
 vector<ll> p;
@@ -57,7 +55,7 @@ bool f(double trial) {
   return ov >= 0.0;
 }
 
-int main() {
+signed main() {
   cin >> N >> K;
   w = vector<double>(N);
   p = vector<ll>(N);
@@ -66,6 +64,6 @@ int main() {
     cin >> w[i] >> p[i];
   }
 
-  double ans = find_max(0.0, 100.0, f);
-  printf("%.14Lf\n", ans);  // Lf?
+  double ans = bin_search(0.0, 100.0);
+  cout << ans << endl;
 }

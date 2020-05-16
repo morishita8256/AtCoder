@@ -5,36 +5,24 @@ using namespace std;
 typedef long long ll;
 const ll LINF = 1001001001001001001ll;
 
-
+// 引数は(ok, ng)
+#pragma region bin_search
+bool f(ll trial);
 template <class T>
-T find_min(T l, T r, bool f(T)) {
+T bin_search(T ok, T ng) {
   T c;
-  while (r - l > 1) {
-    c = (r + l) / 2;
+  while (abs(ok - ng) > 1) {
+    c = (ok + ng) / 2;
     if (f(c)) {
-      r = c;
+      ok = c;
     } else {
-      l = c;
+      ng = c;
     }
   }
 
-  return r;
+  return ok;
 }
-
-template <class T>
-T find_max(T l, T r, bool f(T)) {
-  T c;
-  while (r - l > 1) {
-    c = (r + l) / 2;
-    if (f(c)) {
-      l = c;
-    } else {
-      r = c;
-    }
-  }
-
-  return l;
-}
+#pragma endregion
 
 /*
 https://atcoder.jp/contests/abc144/tasks/abc144_e
@@ -66,5 +54,5 @@ int main() {
   sort(all(A));
   sort(all(F), greater<ll>());
 
-  cout << find_min(-1LL, LINF, f) << endl;
+  cout << bin_search(LINF, -1ll) << endl;
 }
