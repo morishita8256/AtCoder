@@ -12,9 +12,11 @@ const double EPS = 1e-9;
     argmax f(x)
   を返す
 
-  ※凸関数でないとダメ
-  　誤差で死にがち
+  iteration中はdoubleで扱い、最後に両隣の整数を比較して返す
+
+  ※極値以外に傾き0の点があるとダメ　
   　極値を挟んだ値を渡していることを確認
+  　doubleで扱う都合上、mod計算などはできない
  */
 
 #pragma region golden_search
