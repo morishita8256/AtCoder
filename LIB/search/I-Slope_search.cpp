@@ -25,9 +25,7 @@ const double EPS = 1e-9;
   　を返す。入れ替えるにはfの差の部分の不等号に等号を加える。
  */
 
-#pragma region golden_search
-const double Golden = 2.0 / (3.0 + sqrt(5));
-
+#pragma region slope_search
 int f(int trial);
 int slope_search(int inc, int dec) {
   bool isMax = inc < dec;

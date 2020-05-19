@@ -20,7 +20,6 @@ const int INF = 1001001001001001001ll;
 const ll LINF = 1001001001001001001ll;
 const int MOD = 1000000007;
 const double EPS = 1e-9;
-const double PI = acos(-1.0);
 
 template <typename T>
 ostream& operator<<(ostream& s, const vector<T>& v) {
@@ -69,5 +68,20 @@ __attribute__((constructor)) void initial() {
 }
 #pragma endregion
 
+#define M_PI 3.14159265358979
+
 signed main() {
+  double A, B, H, M;
+  cin >> A >> B >> H >> M;
+
+  double h12 = 12 * 60;
+  double HM = H * 60 + M;
+
+  double a = (2 * M_PI) * HM / h12;
+  double b = (2 * M_PI) * M / 60;
+
+  double c = abs(a - b);
+  chmin(c, 2 * M_PI - c);
+  double ans = sqrt(pow(B * sin(c), 2) + pow(B * cos(c) - A, 2));
+  cout << ans << endl;
 }

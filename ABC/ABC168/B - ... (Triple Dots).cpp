@@ -20,7 +20,6 @@ const int INF = 1001001001001001001ll;
 const ll LINF = 1001001001001001001ll;
 const int MOD = 1000000007;
 const double EPS = 1e-9;
-const double PI = acos(-1.0);
 
 template <typename T>
 ostream& operator<<(ostream& s, const vector<T>& v) {
@@ -70,4 +69,16 @@ __attribute__((constructor)) void initial() {
 #pragma endregion
 
 signed main() {
+  int K;
+  cin >> K;
+  string S;
+  cin >> S;
+
+  int N = len(S);
+  if (N <= K) {
+    cout << S << endl;
+    return 0;
+  }
+
+  cout << S.substr(0, K) << "..." << endl;
 }
