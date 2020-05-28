@@ -3,18 +3,19 @@ using namespace std;
 typedef long long ll;
 const ll LINF = 1001001001001001001ll;
 
+/* 負閉路の検出はできない。O(E logV) */
+/* 負の辺があってもダメ */
+
+#pragma region Dijkstra
 struct edge {
   ll to, cost;
   edge(ll to, ll cost) : to(to), cost(cost) {
   }
 };
 
-
 typedef pair<ll, int> P;  // <最短距離, 頂点の番号>
 
-/* 負閉路の検出はできない。O(E logV) */
-/* 負の辺があってもダメ */
-void dijkstra(int V, int E, vector<vector<edge>>& G, vector<ll>& dist, int s) {
+void Dijkstra(int V, int E, vector<vector<edge>>& G, vector<ll>& dist, int s) {
   priority_queue<P, vector<P>, greater<P>> que;
   fill(dist.begin(), dist.end(), LINF);
   dist[s] = 0;
@@ -36,6 +37,8 @@ void dijkstra(int V, int E, vector<vector<edge>>& G, vector<ll>& dist, int s) {
     }
   }
 }
+#pragma endregion Dijkstra
+
 
 int main() {
   int V, E;

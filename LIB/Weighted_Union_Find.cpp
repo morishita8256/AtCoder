@@ -4,7 +4,7 @@ using namespace std;
 
 /*
   重み付きUnionFind。
-  可換群が乗る（和など）。
+  可換群が乗る（和, XORなど）。
 
   WeightedUnionFind<type> uf(node, unit);
   root(x)
