@@ -165,10 +165,11 @@ signed main() {
   dp[0][0] = 1;
   rep(n, N) {
     rep(s, S + 1) {
-      dp[n + 1][s] += dp[n][s];
+      dp[n + 1][s] += dp[n][s] * 2;
       if (s + A[n] <= S)
         dp[n + 1][s + A[n]] += dp[n][s];
     }
   }
-  debug(dp);
+  mint ans = dp[N][S];
+  cout << ans << endl;
 }
