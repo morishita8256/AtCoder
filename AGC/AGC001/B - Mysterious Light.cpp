@@ -70,4 +70,20 @@ __attribute__((constructor)) void initial() {
 #pragma endregion
 
 signed main() {
+  int N, X;
+  cin >> N >> X;
+  int ans = N;
+
+  int num = N - X, den = X;
+  while (true) {
+    if (num % den == 0) {
+      ans += (2 * (num / den) - 1) * den;
+      break;
+    } else {
+      ans += 2 * (num / den) * den;
+      int nnum = den, nden = num % den;
+      num = nnum, den = nden;
+    }
+  }
+  cout << ans << endl;
 }
