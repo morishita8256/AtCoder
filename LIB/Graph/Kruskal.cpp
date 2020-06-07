@@ -3,7 +3,12 @@ using namespace std;
 typedef long long ll;
 const ll LINF = 1001001001001001001ll;
 
+/*
+edgeはedge<type>(from, to, d)で与える。
+グラフはvector<edge>で与える。
+*/
 
+#pragma region Kruskal
 struct UnionFind {
   vector<int> parent;  // parent[root] is the negative of the size.
   UnionFind(int n) : parent(n, -1){};
@@ -49,9 +54,9 @@ struct edge {
 
 /* O(E log V) */
 template <typename T>
-T kruskal(vector<edge<T>>& G, int V, int E) {
+T Kruskal(vector<edge<T>>& G, int V) {
   sort(G.begin(), G.end());
-
+  int E = G.size();
   UnionFind uf(V);
   T min_cost = 0;
 
@@ -65,6 +70,8 @@ T kruskal(vector<edge<T>>& G, int V, int E) {
 
   return min_cost;
 }
+#pragma endregion Kruskal
+
 
 /*
 http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_2_A&lang=ja
@@ -81,5 +88,5 @@ int main() {
     G.push_back(edge<int>(s, t, w));
   }
 
-  cout << kruskal(G, V, E) << endl;
+  cout << Kruskal(G, V) << endl;
 }
