@@ -1,3 +1,4 @@
+#pragma region head
 #include <bits/stdc++.h>
 using namespace std;
 #define pb push_back
@@ -9,8 +10,68 @@ using namespace std;
 #define repp(i, a, b) for (int i = a; i <= (b); ++i)
 #define repr(i, a, b) for (int i = a; i >= (b); --i)
 #define bit(n) (1LL << (n))
-#define sz(x) ((int)(x).size())
+#define len(x) ((ll)(x).size())
+#define debug(var) cout << "[" << #var << "]\n" << var << endl
+#define test(s) \
+  if (!(s))     \
+    cout << "Line " << __LINE__ << ": [" << #s << "] is false" << endl;
+#define int long long
 typedef long long ll;
+#define double long double
+typedef double ld;
+const int INF = 1001001001001001001ll;
+const ll LINF = 1001001001001001001ll;
+const int MOD = 1000000007;
+const double EPS = 1e-9;
+const double PI = acos(-1.0);
+
+template <typename T>
+ostream& operator<<(ostream& s, const vector<T>& v) {
+  int len = v.size();
+  for (int i = 0; i < len; ++i) {
+    s << v[i];
+    if (i < len - 1)
+      s << ' ';
+  }
+  return s;
+}
+
+template <typename T>
+ostream& operator<<(ostream& s, const vector<vector<T>>& vv) {
+  int len = vv.size();
+  for (int i = 0; i < len; ++i) {
+    s << vv[i];
+    if (i != len - 1)
+      s << '\n';
+  }
+  return s;
+}
+
+template <class T>
+inline bool chmin(T& a, T b) {
+  if (a > b) {
+    a = b;
+    return true;
+  }
+  return false;
+}
+
+template <class T>
+inline bool chmax(T& a, T b) {
+  if (a < b) {
+    a = b;
+    return true;
+  }
+  return false;
+}
+
+__attribute__((constructor)) void initial() {
+  cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  cout << fixed << setprecision(15);
+}
+#pragma endregion
+
 
 #pragma region LazySegmentTree
 template <typename T, typename E>
@@ -123,45 +184,68 @@ struct LazySegmentTree {
 };
 #pragma endregion LazySegmentTree
 
-/*
-http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_G&lang=jp
-RSQ and RAQ
-*/
-int main() {
-  int n, q;
-  cin >> n >> q;
 
-  using P = pair<ll, ll>;
+signed main() {
+  int N, M;
+  cin >> N >> M;
+
+  vector<int> A(N);
+  vector<int> cnt(N + 1);
+  rep(i, N) {
+    cin >> A[i];
+    A[i]--;
+    cnt[A[i]]++;
+  }
+
+
+  using P = pair<int, int>;
   // first:sum, second:# of including elem
   auto f = [](P t1, P t2) { return P(t1.fi + t2.fi, t1.se + t2.se); };
   auto ti = P(0, 0);
-  auto g = [](P t, ll e) { return P(t.fi + t.se * e, t.se); };
-  auto h = [](ll e1, ll e2) { return e1 + e2; };
-  ll ei = 0;
+  auto g = [](P t, int e) { return P(t.fi + t.se * e, t.se); };
+  auto h = [](int e1, int e2) { return e1 + e2; };
+  int ei = 0;
 
-  LazySegmentTree<P, ll> lz(f, g, h, ti, ei);
-  lz.build(vector<P>(n, P(0, 1)));
+  LazySegmentTree<P, int> lz(f, g, h, ti, ei);
+  lz.build(vector<P>(N, P(0, 1)));
 
-  vector<ll> ans;
-  rep(Q, q) {
-    int query;
-    cin >> query;
-    if (query == 0) {
-      ll s, t, x;
-      cin >> s >> t >> x;
-      s--;
-      t--;
-      lz.update(s, t + 1, x);
-    } else {
-      ll s, t;
-      cin >> s >> t;
-      s--;
-      t--;
-      ans.pb(lz.query(s, t + 1).fi);
-    }
+  rep(i, N) {
+    int r = i + 1;
+    int l = max(r - cnt[i], 0ll);
+    lz.update(l, r, 1);
   }
 
-  rep(i, ans.size()) {
-    cout << ans[i] << endl;
+  int ans = 0;
+  rep(i, N) {
+    ans += (lz.query(i, i + 1).fi == 0);
+  }
+
+
+  vector<int> X(M), Y(M);
+  rep(i, M) {
+    cin >> X[i] >> Y[i];
+    Y[i]--;
+    X[i]--;
+
+    int x = A[X[i]];
+    int l = x + 1 - cnt[x];
+    if (l >= 0) {
+      lz.update(l, l + 1, -1);
+      if (lz.query(l, l + 1).fi == 0)
+        ans++;
+    }
+    cnt[x]--;
+
+    int y = Y[i];
+    l = y + 1 - cnt[y] - 1;
+    if (l >= 0) {
+      lz.update(l, l + 1, 1);
+      if (lz.query(l, l + 1).fi == 1)
+        ans--;
+    }
+    cnt[y]++;
+
+    A[X[i]] = y;
+    cout << ans << endl;
   }
 }
