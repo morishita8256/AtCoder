@@ -72,50 +72,19 @@ __attribute__((constructor)) void initial() {
 }
 #pragma endregion
 
-
 signed main() {
-  int N;
-  cin >> N;
-  string s;
-  cin >> s;
+  int N, M;
+  cin >> N >> M;
 
-  map<char, char> inv = {{'S', 'W'}, {'W', 'S'}};
-
-  string ans;
-  vector<string> heads = {"SS", "SW", "WS", "WW"};
-  for (auto head : heads) {
-    ans = head;
-    repp(i, 1, N - 2) {
-      char p = ans[len(ans) - 2];
-      char c = ans[len(ans) - 1];
-      if (c == 'S' ^ s[i] == 'x') {
-        ans.pb(p);
-      } else {
-        ans.pb(inv[p]);
-      }
-    }
-
-    bool ok = true;
-    if (ans[0] == 'S' ^ s[0] == 'x') {
-      if (ans[1] != ans[N - 1])
-        ok = false;
-    } else {
-      if (ans[1] == ans[N - 1])
-        ok = false;
-    }
-
-    if (ans[N - 1] == 'S' ^ s[N - 1] == 'x') {
-      if (ans[0] != ans[N - 2])
-        ok = false;
-    } else {
-      if (ans[0] == ans[N - 2])
-        ok = false;
-    }
-
-    if (ok) {
-      cout << ans << endl;
-      return 0;
-    }
+  int ans;
+  if (N == 1 && M == 1) {
+    ans = 1;
+  } else if (N == 1) {
+    ans = M - 2;
+  } else if (M == 1) {
+    ans = N - 2;
+  } else {
+    ans = (N - 2) * (M - 2);
   }
-  cout << -1 << '\n';
+  cout << ans << endl;
 }

@@ -72,50 +72,33 @@ __attribute__((constructor)) void initial() {
 }
 #pragma endregion
 
+vector<ll> divisor(ll n) {
+  vector<ll> ret;
+  for (ll i = 1; i * i <= n; i++) {
+    if (n % i == 0) {
+      ret.push_back(i);
+      if (i * i != n)
+        ret.push_back(n / i);
+    }
+  }
+  sort(begin(ret), end(ret));
+  return (ret);
+}
 
 signed main() {
   int N;
   cin >> N;
-  string s;
-  cin >> s;
 
-  map<char, char> inv = {{'S', 'W'}, {'W', 'S'}};
-
-  string ans;
-  vector<string> heads = {"SS", "SW", "WS", "WW"};
-  for (auto head : heads) {
-    ans = head;
-    repp(i, 1, N - 2) {
-      char p = ans[len(ans) - 2];
-      char c = ans[len(ans) - 1];
-      if (c == 'S' ^ s[i] == 'x') {
-        ans.pb(p);
-      } else {
-        ans.pb(inv[p]);
-      }
-    }
-
-    bool ok = true;
-    if (ans[0] == 'S' ^ s[0] == 'x') {
-      if (ans[1] != ans[N - 1])
-        ok = false;
-    } else {
-      if (ans[1] == ans[N - 1])
-        ok = false;
-    }
-
-    if (ans[N - 1] == 'S' ^ s[N - 1] == 'x') {
-      if (ans[0] != ans[N - 2])
-        ok = false;
-    } else {
-      if (ans[0] == ans[N - 2])
-        ok = false;
-    }
-
-    if (ok) {
-      cout << ans << endl;
-      return 0;
+  vector<int> cnt(N + 1);
+  repp(i, 1, N) {
+    for (int j = i; j <= N; j += i) {
+      cnt[j]++;
     }
   }
-  cout << -1 << '\n';
+
+  int ans = 0;
+  repp(i, 1, N) {
+    ans += cnt[i] * i;
+  }
+  cout << ans << endl;
 }

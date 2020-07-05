@@ -1,19 +1,54 @@
+#pragma region head
 #include <bits/stdc++.h>
 using namespace std;
 #define pb push_back
 #define fi first
 #define se second
+#define mp make_pair
 #define all(x) (x).begin(), (x).end()
 #define rep(i, n) for (int i = 0; i < (n); ++i)
 #define repp(i, a, b) for (int i = a; i <= (b); ++i)
 #define repr(i, a, b) for (int i = a; i >= (b); --i)
+#define bit(n) (1LL << (n))
+#define len(x) ((ll)(x).size())
+#define debug(var) cout << "[" << #var << "]\n" << var << endl
+#define test(s) \
+  if (!(s))     \
+    cout << "Line " << __LINE__ << ": [" << #s << "] is false" << endl;
+#define int long long
 typedef long long ll;
-const int INF = 1001001001;
+#define double long double
+typedef double ld;
+const int INF = 1001001001001001001ll;
 const ll LINF = 1001001001001001001ll;
-const int MOD = 1e9 + 7;
+const int MOD = 1000000007;
+const double EPS = 1e-9;
+const double PI = acos(-1.0);
+
+template <typename T>
+ostream& operator<<(ostream& s, const vector<T>& v) {
+  int len = v.size();
+  for (int i = 0; i < len; ++i) {
+    s << v[i];
+    if (i < len - 1)
+      s << ' ';
+  }
+  return s;
+}
+
+template <typename T>
+ostream& operator<<(ostream& s, const vector<vector<T>>& vv) {
+  int len = vv.size();
+  for (int i = 0; i < len; ++i) {
+    s << vv[i];
+    if (i != len - 1)
+      s << '\n';
+  }
+  return s;
+}
 
 template <class T>
-inline bool chmin(T &a, T b) {
+inline bool chmin(T& a, T b) {
   if (a > b) {
     a = b;
     return true;
@@ -22,7 +57,7 @@ inline bool chmin(T &a, T b) {
 }
 
 template <class T>
-inline bool chmax(T &a, T b) {
+inline bool chmax(T& a, T b) {
   if (a < b) {
     a = b;
     return true;
@@ -30,37 +65,42 @@ inline bool chmax(T &a, T b) {
   return false;
 }
 
-ll N;
-int keta;
+__attribute__((constructor)) void initial() {
+  cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  cout << fixed << setprecision(15);
+}
+#pragma endregion
 
-int dfs(int now, int sum) {
-  int ans = 0;
+int N;
+vector<int> nums;
 
-  int cnt[10];
-  rep(i, 10) { cnt[i] = 0; }
-  int sum_cp = sum;
-  while (sum_cp) {
-    cnt[sum_cp % 10]++;
-    sum_cp /= 10;
+bool ok(int num) {
+  string s = to_string(num);
+  map<char, int> m;
+  for (char c : s) {
+    m[c]++;
   }
-  bool is_753 =
-      cnt[3] > 0 && cnt[5] > 0 && cnt[7] > 0 &&
-      cnt[0] + cnt[1] + cnt[2] + cnt[4] + cnt[6] + cnt[8] + cnt[9] == 0;
 
-  if (now == keta) {
-    if (sum <= N && is_753) ans++;
-  } else {
-    if (is_753) ans++;
-    for (int i = 3; i < 8; i += 2) {
-      ans += dfs(now + 1, sum * 10 + i);
-    }
-  }
-  return ans;
+  return m['7'] > 0 && m['5'] > 0 && m['3'] > 0;
 }
 
-int main() {
-  cin >> N;
-  keta = log10(N) + 1;
+void dfs(int num) {
+  if (num > N)
+    return;
+  if (ok(num))
+    nums.pb(num);
 
-  cout << dfs(0, 0) << endl;
+  dfs(num * 10 + 7);
+  dfs(num * 10 + 5);
+  dfs(num * 10 + 3);
+}
+
+
+signed main() {
+  cin >> N;
+  dfs(0);
+
+  int ans = len(nums);
+  cout << ans << endl;
 }

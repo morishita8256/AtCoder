@@ -1,17 +1,51 @@
+#pragma region head
 #include <bits/stdc++.h>
 using namespace std;
 #define pb push_back
 #define fi first
 #define se second
+#define mp make_pair
 #define all(x) (x).begin(), (x).end()
 #define rep(i, n) for (int i = 0; i < (n); ++i)
 #define repp(i, a, b) for (int i = a; i <= (b); ++i)
 #define repr(i, a, b) for (int i = a; i >= (b); --i)
 #define bit(n) (1LL << (n))
+#define len(x) ((ll)(x).size())
+#define debug(var) cout << "[" << #var << "]\n" << var << endl
+#define test(s) \
+  if (!(s))     \
+    cout << "Line " << __LINE__ << ": [" << #s << "] is false" << endl;
+#define int long long
 typedef long long ll;
-const int INF = 1001001001;
+#define double long double
+typedef double ld;
+const int INF = 1001001001001001001ll;
 const ll LINF = 1001001001001001001ll;
 const int MOD = 1000000007;
+const double EPS = 1e-9;
+const double PI = acos(-1.0);
+
+template <typename T>
+ostream& operator<<(ostream& s, const vector<T>& v) {
+  int len = v.size();
+  for (int i = 0; i < len; ++i) {
+    s << v[i];
+    if (i < len - 1)
+      s << ' ';
+  }
+  return s;
+}
+
+template <typename T>
+ostream& operator<<(ostream& s, const vector<vector<T>>& vv) {
+  int len = vv.size();
+  for (int i = 0; i < len; ++i) {
+    s << vv[i];
+    if (i != len - 1)
+      s << '\n';
+  }
+  return s;
+}
 
 template <class T>
 inline bool chmin(T& a, T b) {
@@ -31,93 +65,101 @@ inline bool chmax(T& a, T b) {
   return false;
 }
 
+__attribute__((constructor)) void initial() {
+  cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  cout << fixed << setprecision(15);
+}
+#pragma endregion
+
+void dfs(int now, vector<vector<int>>& G, vector<bool>& visit) {
+  visit[now] = true;
+  for (int next : G[now])
+    if (!visit[next])
+      dfs(next, G, visit);
+}
+
 struct edge {
   ll to, cost;
-  edge(ll to, ll cost) : to(to), cost(cost) {}
+  edge(ll to, ll cost) : to(to), cost(cost) {
+  }
 };
 
-int V, E, P;
-vector<vector<edge>> G;
-vector<ll> dist;
 
 /* 負閉路があるとtrueを返す。O(EV) */
 /* 負の辺があっても計算できる */
-bool bellman_ford(int s, vector<ll>& dist, int iter) {  // sは開始頂点
-  dist[s] = 0;  // 開始点の距離は0
-  for (int i = 0; i < iter; i++) {
+bool bellman_ford(int V,
+                  int E,
+                  vector<vector<edge>>& G,
+                  vector<ll>& dist,
+                  int s) {  // sは開始頂点
+  dist[s] = 0;              // 開始点の距離は0
+  for (int i = 0; i < V; i++) {
     for (int v = 0; v < V; v++) {
       for (int k = 0; k < G[v].size(); k++) {
         edge e = G[v][k];
         if (dist[v] != LINF && dist[e.to] > dist[v] + e.cost) {
           dist[e.to] = dist[v] + e.cost;
+          if (i == V - 1)
+            return true;  // n回目にも更新があるなら負の閉路が存在
         }
       }
     }
   }
+  return false;
 }
 
-void dfs(int now, vector<vector<edge>>& G, vector<bool>& reach) {
-  reach[now] = true;
-  for (auto edge : G[now]) {
-    ll next = edge.to;
-    if (reach[next])
-      continue;
-    dfs(next, G, reach);
-  }
-}
 
-int main() {
-  cin >> V >> E >> P;
+signed main() {
+  int N, M, P;
+  cin >> N >> M >> P;
+  vector<int> A(M), B(M), C(M);
 
-  vector<vector<edge>> Gf(V);
-  vector<bool> reachf(V, false);
-  vector<vector<edge>> Gb(V);
-  vector<bool> reachb(V, false);
+  vector<vector<int>> Gfw(N), Gbk(N);
 
-  for (int i = 0; i < E; i++) {
-    ll from, to, cost;
-    cin >> from >> to >> cost;
-    from--;
-    to--;
-    Gf[from].push_back(edge(to, P - cost));
-    Gb[to].push_back(edge(from, P - cost));
+  rep(i, M) {
+    cin >> A[i] >> B[i] >> C[i];
+    A[i]--, B[i]--;
+    C[i] = P - C[i];
+
+    Gfw[A[i]].pb(B[i]);
+    Gbk[B[i]].pb(A[i]);
   }
 
-  dfs(0, Gf, reachf);
-  dfs(V - 1, Gb, reachb);
+  vector<bool> Fw(N, false), Bk(N, false);
+  dfs(0, Gfw, Fw);
+  dfs(N - 1, Gbk, Bk);
 
-  vector<bool> use(V);
-  rep(i, V) {
-    use[i] = (reachf[i] && reachb[i]);
+  vector<bool> use(N, false);
+  rep(i, N) {
+    if (Fw[i] && Bk[i])
+      use[i] = true;
   }
 
-  G = vector<vector<edge>>(V);
+  int V = 0;
+  map<int, int> conv;
+  rep(i, N) {
+    if (use[i])
+      conv[i] = V++;
+  }
 
-  rep(i, V) {
-    if (!use[i])
-      continue;
-    for (auto ed : Gf[i]) {
-      if (use[ed.to]) {
-        G[i].pb(edge(ed.to, ed.cost));
-      }
+  vector<vector<edge>> G(V);
+  int E = 0;
+  rep(i, M) {
+    if (use[A[i]] && use[B[i]]) {
+      G[conv[A[i]]].pb(edge(conv[B[i]], C[i]));
+      E++;
     }
   }
 
-  vector<ll> dist1(V, LINF);
-  bellman_ford(0, dist1, V);
-
-  vector<ll> dist2(V, LINF);
-  bellman_ford(0, dist2, 2 * V);
-
-  bool ok = true;
-  rep(i, V) {
-    if (dist1[i] != dist2[i])
-      ok = false;
-  }
-
-  if (ok) {
-    cout << max(0LL, -dist1[V - 1]) << endl;
+  int ans;
+  vector<int> dist(V, INF);
+  if (bellman_ford(V, E, G, dist, 0)) {
+    ans = -1;
   } else {
-    cout << -1 << endl;
+    ans = -dist[V - 1];
+    chmax(ans, 0ll);
   }
+
+  cout << ans << endl;
 }

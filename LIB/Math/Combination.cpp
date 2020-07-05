@@ -27,6 +27,14 @@ long long COM(int n, int k) {
   return fac[n] * (finv[k] * finv[n - k] % MOD) % MOD;
 }
 
+long long PERM(int n, int k) {
+  if (n < k)
+    return 0;
+  if (n < 0 || k < 0)
+    return 0;
+  return fac[n] * (finv[n - k] % MOD) % MOD;
+}
+
 int main() {
   /* パスカルの三角形 */
   int N;

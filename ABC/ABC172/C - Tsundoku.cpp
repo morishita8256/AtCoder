@@ -72,50 +72,35 @@ __attribute__((constructor)) void initial() {
 }
 #pragma endregion
 
-
 signed main() {
-  int N;
-  cin >> N;
-  string s;
-  cin >> s;
-
-  map<char, char> inv = {{'S', 'W'}, {'W', 'S'}};
-
-  string ans;
-  vector<string> heads = {"SS", "SW", "WS", "WW"};
-  for (auto head : heads) {
-    ans = head;
-    repp(i, 1, N - 2) {
-      char p = ans[len(ans) - 2];
-      char c = ans[len(ans) - 1];
-      if (c == 'S' ^ s[i] == 'x') {
-        ans.pb(p);
-      } else {
-        ans.pb(inv[p]);
-      }
-    }
-
-    bool ok = true;
-    if (ans[0] == 'S' ^ s[0] == 'x') {
-      if (ans[1] != ans[N - 1])
-        ok = false;
-    } else {
-      if (ans[1] == ans[N - 1])
-        ok = false;
-    }
-
-    if (ans[N - 1] == 'S' ^ s[N - 1] == 'x') {
-      if (ans[0] != ans[N - 2])
-        ok = false;
-    } else {
-      if (ans[0] == ans[N - 2])
-        ok = false;
-    }
-
-    if (ok) {
-      cout << ans << endl;
-      return 0;
-    }
+  int N, M, K;
+  cin >> N >> M >> K;
+  vector<int> A(N + 1);
+  rep(i, N) {
+    int a;
+    cin >> a;
+    A[i + 1] = A[i] + a;
   }
-  cout << -1 << '\n';
+
+  vector<int> B(M + 1);
+  rep(i, M) {
+    int b;
+    cin >> b;
+    B[i + 1] = B[i] + b;
+  }
+
+  int ans = 0;
+  rep(n, N + 1) {
+    int res = K - A[n];
+    if (res < 0)
+      break;
+
+    auto iter = upper_bound(all(B), res);
+    int ind = distance(B.begin(), iter);
+    int m = ind - 1;
+
+    int sum = n + m;
+    chmax(ans, sum);
+  }
+  cout << ans << endl;
 }
