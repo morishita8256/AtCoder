@@ -1,1 +1,0 @@
-good ? "Good" : "Bad"

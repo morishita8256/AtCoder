@@ -1,2 +1,0 @@
-t(now).empty())
-      break;
